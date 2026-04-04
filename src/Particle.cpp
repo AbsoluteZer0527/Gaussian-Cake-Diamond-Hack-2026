@@ -28,6 +28,10 @@ void Particle::Integrate(float deltaTime){
     force = glm::vec3(0.0f);
 }
 
+bool Particle::HaveLife() const {
+    return life > 0.0f;
+}
+
 void Particle::CheckGroundCollision(float groundHeight, float elasticity, float friction){
     //push position on ground
     if (position.y - radius < groundHeight){

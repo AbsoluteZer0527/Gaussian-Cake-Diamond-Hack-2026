@@ -18,7 +18,7 @@ SpringDamper::SpringDamper(Particle* p1, Particle* p2, float ks, float kd) {
     restLength = glm::distance(P1->position, P2->position);
 }
 
-void SpringDamper::SpringDamper::ComputeForce(){
+void SpringDamper::ComputeForce(){
     glm::vec3 eStar = P2->position - P1->position;
     float l = glm::length(eStar);
 

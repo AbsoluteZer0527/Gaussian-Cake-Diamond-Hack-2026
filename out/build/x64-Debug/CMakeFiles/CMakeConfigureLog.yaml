@@ -7,7 +7,7 @@ events:
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:212 (message)"
       - "CMakeLists.txt:3 (project)"
     message: |
-      The system is: Windows - 10.0.26100 - AMD64
+      The system is: Windows - 10.0.26200 - AMD64
   -
     kind: "find-v1"
     backtrace:
@@ -59,6 +59,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -68,7 +69,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
       ENV{INCLUDE}:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\include"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\ATLMFC\\include"
@@ -110,7 +111,7 @@ events:
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
       
       The C compiler identification is MSVC, found in:
-        C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/4.2.3-msvc3/CompilerIdC/CMakeCCompilerId.exe
+        C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/4.2.3-msvc3/CompilerIdC/CMakeCCompilerId.exe
       
   -
     kind: "message-v1"
@@ -122,7 +123,7 @@ events:
     message: |
       Detecting C compiler /showIncludes prefix:
         main.c
-        Note: including file: C:\\Users\\zhulu\\Github\\Guassian-Cake\\out\\build\\x64-Debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\zhulu\\Github\\Gussian Cake Diamond Hack 2026\\out\\build\\x64-Debug\\CMakeFiles\\ShowIncludes\\foo.h
         
       Found prefix "Note: including file: "
   -
@@ -171,6 +172,7 @@ events:
       - "C:/Program Files/dotnet/"
       - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
       - "C:/Program Files/Git/cmd/"
+      - "C:/Users/zhulu/.local/bin/"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/zhulu/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/zhulu/.dotnet/tools/"
@@ -209,6 +211,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -218,7 +221,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
   -
     kind: "find-v1"
     backtrace:
@@ -265,6 +268,7 @@ events:
       - "C:/Program Files/dotnet/"
       - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
       - "C:/Program Files/Git/cmd/"
+      - "C:/Users/zhulu/.local/bin/"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/zhulu/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/zhulu/.dotnet/tools/"
@@ -347,6 +351,9 @@ events:
       - "C:/Program Files/Git/cmd/lld-link.com"
       - "C:/Program Files/Git/cmd/lld-link.exe"
       - "C:/Program Files/Git/cmd/lld-link"
+      - "C:/Users/zhulu/.local/bin/lld-link.com"
+      - "C:/Users/zhulu/.local/bin/lld-link.exe"
+      - "C:/Users/zhulu/.local/bin/lld-link"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/lld-link.com"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/lld-link.exe"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/lld-link"
@@ -401,6 +408,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -410,7 +418,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
   -
     kind: "find-v1"
     backtrace:
@@ -455,6 +463,7 @@ events:
       - "C:/Program Files/dotnet/"
       - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
       - "C:/Program Files/Git/cmd/"
+      - "C:/Users/zhulu/.local/bin/"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/zhulu/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/zhulu/.dotnet/tools/"
@@ -493,6 +502,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -502,7 +512,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
   -
     kind: "find-v1"
     backtrace:
@@ -547,6 +557,7 @@ events:
       - "C:/Program Files/dotnet/"
       - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
       - "C:/Program Files/Git/cmd/"
+      - "C:/Users/zhulu/.local/bin/"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/zhulu/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/zhulu/.dotnet/tools/"
@@ -609,6 +620,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -618,7 +630,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
   -
     kind: "find-v1"
     backtrace:
@@ -663,6 +675,7 @@ events:
       - "C:/Program Files/dotnet/"
       - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
       - "C:/Program Files/Git/cmd/"
+      - "C:/Users/zhulu/.local/bin/"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/zhulu/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/zhulu/.dotnet/tools/"
@@ -701,6 +714,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -710,7 +724,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
   -
     kind: "find-v1"
     backtrace:
@@ -762,6 +776,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -771,7 +786,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
       ENV{INCLUDE}:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\include"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\ATLMFC\\include"
@@ -813,7 +828,7 @@ events:
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
       
       The CXX compiler identification is MSVC, found in:
-        C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/4.2.3-msvc3/CompilerIdCXX/CMakeCXXCompilerId.exe
+        C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/4.2.3-msvc3/CompilerIdCXX/CMakeCXXCompilerId.exe
       
   -
     kind: "message-v1"
@@ -825,7 +840,7 @@ events:
     message: |
       Detecting CXX compiler /showIncludes prefix:
         main.c
-        Note: including file: C:\\Users\\zhulu\\Github\\Guassian-Cake\\out\\build\\x64-Debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\zhulu\\Github\\Gussian Cake Diamond Hack 2026\\out\\build\\x64-Debug\\CMakeFiles\\ShowIncludes\\foo.h
         
       Found prefix "Note: including file: "
   -
@@ -874,6 +889,7 @@ events:
       - "C:/Program Files/dotnet/"
       - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
       - "C:/Program Files/Git/cmd/"
+      - "C:/Users/zhulu/.local/bin/"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/zhulu/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/zhulu/.dotnet/tools/"
@@ -956,6 +972,9 @@ events:
       - "C:/Program Files/Git/cmd/lld-link.com"
       - "C:/Program Files/Git/cmd/lld-link.exe"
       - "C:/Program Files/Git/cmd/lld-link"
+      - "C:/Users/zhulu/.local/bin/lld-link.com"
+      - "C:/Users/zhulu/.local/bin/lld-link.exe"
+      - "C:/Users/zhulu/.local/bin/lld-link"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/lld-link.com"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/lld-link.exe"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/lld-link"
@@ -1010,6 +1029,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -1019,7 +1039,7 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
   -
     kind: "find-v1"
     backtrace:
@@ -1067,6 +1087,7 @@ events:
       - "C:/Program Files/dotnet/"
       - "C:/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/"
       - "C:/Program Files/Git/cmd/"
+      - "C:/Users/zhulu/.local/bin/"
       - "C:/Users/zhulu/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/zhulu/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/zhulu/.dotnet/tools/"
@@ -1085,9 +1106,9 @@ events:
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/sbin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/"
-      - "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug/bin/"
-      - "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug/sbin/"
-      - "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug/"
+      - "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug/bin/"
+      - "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug/sbin/"
+      - "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug/"
     searched_directories:
       - "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/rc.com"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/rc.exe"
@@ -1141,6 +1162,7 @@ events:
         - "C:\\Program Files\\dotnet\\"
         - "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\"
         - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\zhulu\\.local\\bin"
         - "C:\\Users\\zhulu\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\zhulu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\zhulu\\.dotnet\\tools"
@@ -1150,12 +1172,12 @@ events:
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg"
-      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+      CMAKE_INSTALL_PREFIX: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
         - "C:/Program Files (x86)"
         - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake"
-        - "C:/Users/zhulu/Github/Guassian-Cake/out/install/x64-Debug"
+        - "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/install/x64-Debug"
   -
     kind: "try_compile-v1"
     backtrace:
@@ -1165,8 +1187,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-mz511x"
-      binary: "C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-mz511x"
+      source: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-9oubt6"
+      binary: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-9oubt6"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -1175,11 +1197,11 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-mz511x'
+        Change Dir: 'C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-9oubt6'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_6b1ab
-        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo -D_MBCS  /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_6b1ab.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_6b1ab.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_6b1ab.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_6b1ab.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_6b1ab.exe /implib:cmTC_6b1ab.lib /pdb:cmTC_6b1ab.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_97d82
+        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo -D_MBCS  /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_97d82.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_97d82.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_97d82.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_97d82.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_97d82.exe /implib:cmTC_97d82.lib /pdb:cmTC_97d82.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -1219,8 +1241,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-tnwgz9"
-      binary: "C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-tnwgz9"
+      source: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-b25vda"
+      binary: "C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-b25vda"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -1230,11 +1252,11 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/zhulu/Github/Guassian-Cake/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-tnwgz9'
+        Change Dir: 'C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-b25vda'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_e8b68
-        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -D_MBCS  /DWIN32 /D_WINDOWS /GR /EHsc  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_e8b68.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_e8b68.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_e8b68.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_e8b68.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_e8b68.exe /implib:cmTC_e8b68.lib /pdb:cmTC_e8b68.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_6ead6
+        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -D_MBCS  /DWIN32 /D_WINDOWS /GR /EHsc  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_6ead6.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_6ead6.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_6ead6.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_6ead6.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_6ead6.exe /implib:cmTC_6ead6.lib /pdb:cmTC_6ead6.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -

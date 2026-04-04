@@ -15,10 +15,12 @@ set(
     src/imgui_demo.cpp
     src/imgui_draw.cpp
     src/imgui_tables.cpp
-    src/imgui_impl_glfw
+    src/imgui_impl_glfw.cpp
     src/imgui_impl_opengl3.cpp
-    src/Particle.cpp       
-    src/ParticleSystem.cpp   
+    src/Particle.cpp
+    src/ParticleSystem.cpp
+    src/Guassian.cpp
+    src/SpringDamper.cpp
 )
 
 # Add header files
