@@ -1,7 +1,8 @@
 #pragma once
 #include "core.h"
+#include <vector>
+#include <Eigen/Dense>
 
-// Placeholder — will be implemented in Phase 1
 class Guassian {
 public:
     Guassian() {}
