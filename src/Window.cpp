@@ -26,12 +26,12 @@ Gaussian*        Window::gaussianB     = nullptr;
 OTMap*           Window::otMap         = nullptr;
 TransportAnimator* Window::animator    = nullptr;
 bool             Window::otMapComputed = false;
-int              Window::particleCount = 1000;
+int              Window::particleCount = 5000;
 std::vector<std::string> Window::meshNames;
 std::vector<std::string> Window::meshPaths;
 int              Window::meshIndexA    = 0;
 int              Window::meshIndexB    = 0;
-int              Window::sampleCount   = 2000;
+int              Window::sampleCount   = 5000;
 
 //Interaction Variables
 bool LeftDown, RightDown;
@@ -172,7 +172,8 @@ void Window::idleCallback() {
 }
 
 void Window::displayCallback(GLFWwindow* window) {
-    glClearColor(83/255.0f, 203/255.0f, 243/255.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    // glClearColor(83/255.0f, 203/255.0f, 243/255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     GLfloat light0_pos[] = {10.0f, 10.0f, 10.0f, 1.0f};
@@ -320,7 +321,7 @@ static void DrawGaussianSelector(const char* label, int& meshIndex) {
     if (meshIndex > 0)
         ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh selected");
     else
-        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  blob (default)");
+        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  Show Guassian(default)");
 
     ImGui::PopID();
 }
@@ -336,7 +337,7 @@ void Window::DrawMainGUI() {
     DrawGaussianSelector("Target (B)", meshIndexB);
 
     ImGui::Separator();
-    ImGui::SliderInt("Particles",    &particleCount, 100, 2000);
+    ImGui::SliderInt("Particles",    &particleCount, 100, 10000);
     ImGui::SliderInt("Mesh Samples", &sampleCount,   500, 10000);
 
     ImGui::Spacing();

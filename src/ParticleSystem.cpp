@@ -28,52 +28,36 @@ void ParticleSystem::Update(float deltaTime) {
     }
 }
 
-void ParticleSystem::DrawSphere(float radius, int slices, int stacks) {
-    for (int i = 0; i < stacks; i++) {
-        float phi0 = glm::pi<float>() * ((float)i / stacks);
-        float phi1 = glm::pi<float>() * ((float)(i + 1) / stacks);
-
-        glBegin(GL_TRIANGLE_STRIP);
-        for (int j = 0; j <= slices; j++) {
-            float theta = 2.0f * glm::pi<float>() * ((float)j / slices);
-
-            float x0 = radius * sin(phi0) * cos(theta);
-            float y0 = radius * cos(phi0);
-            float z0 = radius * sin(phi0) * sin(theta);
-
-            float x1 = radius * sin(phi1) * cos(theta);
-            float y1 = radius * cos(phi1);
-            float z1 = radius * sin(phi1) * sin(theta);
-
-            glNormal3f(x0/radius, y0/radius, z0/radius);
-            glVertex3f(x0, y0, z0);
-            glNormal3f(x1/radius, y1/radius, z1/radius);
-            glVertex3f(x1, y1, z1);
-        }
-        glEnd();
-    }
-}
+// DrawSphere has been completely removed.
 
 void ParticleSystem::Draw(glm::mat4 viewProjection) {
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    // 1. Disable lighting to save calculation time
+    glDisable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
 
+    // 2. Load the matrix ONCE, not per-particle
     glMatrixMode(GL_MODELVIEW);
-    glColor3f(1.0f, 0.75f, 0.3f); // warm golden-orange
-    for (Particle& p : particles) {
-        glPushMatrix();
-        glLoadMatrixf(glm::value_ptr(viewProjection));
-        glTranslatef(p.position.x, p.position.y, p.position.z);
-        DrawSphere(p.radius, 12, 12);
-        glPopMatrix();
+    glLoadMatrixf(glm::value_ptr(viewProjection)); 
+
+    // Set color once
+    glColor3f(0.0f, 0.0f, 0.0f); // warm golden-orange
+
+    // 3. Map your world-space radius to pixel-space point size. 
+    // You may need to adjust the multiplier (e.g., 100.0f) depending on your window size.
+    glPointSize(particleRadius * 100.0f); 
+
+    // 4. Draw all particles in a single batch
+    glBegin(GL_POINTS);
+    for (const Particle& p : particles) {
+        glVertex3f(p.position.x, p.position.y, p.position.z);
     }
-    glDisable(GL_LIGHTING);
+    glEnd();
 }
 
 void ParticleSystem::DrawGUI() {
     ImGui::Begin("Particle System");
     ImGui::Text("Active Particles: %d", (int)particles.size());
-    ImGui::SliderFloat("Particle Radius", &particleRadius, 0.01f, 1.0f);
+    // Adjusted the slider max slightly so the points don't get too massive in pixel space
+    ImGui::SliderFloat("Particle Radius", &particleRadius, 0.01f, 0.5f); 
     ImGui::End();
 }
