@@ -12,7 +12,7 @@ Think about this question: "If I have a pile of stuff in one shape, and I want t
 
 ![Alt text](https://www.microsoft.com/en-us/research/wp-content/uploads/2020/09/OTDD_Shovel-Figure.png)
 
-And if you have ever heard of this website: https://obamify.com/, it shares a similar concept but instead, this program is 3D.
+And if you have ever heard of this website: https://obamify.com/, it shares a similar concept, but instead, this program is 3D.
 
 ## What it does
 This is an experimental graphic project that mainly serves the purpose of applying the math concept of Optimal Transport into an actual computer animation pipeline.
@@ -63,12 +63,12 @@ It actually worked.
 
 ## What's next for Gaussian Cake
 
-This is an experimental project that provides insight into 3D model morphing, and I can definitely incorporate the concept into larger game projects or animation programs. 
+This is an experimental project that expands on the concept of a simple particle system: It provides insight into 3D model morphing, and I can definitely incorporate the concept into larger game projects or animation programs. 
 
 _The point of this project is to show how theoretical concepts can be applied in diverse settings and how practical applications can help visualize and understand these concepts._
 
 ## How to Run
-Download the release, unzip and run the menv.exe.
+Download the release, unzip it, and run the menv.exe.
 
 ### Input Bindings
 ESC — Close application
