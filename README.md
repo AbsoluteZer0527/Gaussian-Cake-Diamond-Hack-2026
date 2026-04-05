@@ -5,9 +5,14 @@ Download the release, unzip and run the menv.exe.
 
 ### Input Bindings
 ESC — Close application
+
 R — Reset camera to default position
+
 Left Drag — Rotate view (azimuth + incline)
+
 Right Drag — Zoom in/out
+
+To import your own .obj model: Add to the "meshes" folder.
 
 ## Inspiration
 This project is inspired by the mathematical problem of **Optimal Transport (OT)**, which seeks a mapping between two distributions that minimizes a specified transport cost. 
