@@ -32,6 +32,14 @@ public:
     static char objPathB[256];
     static int  sampleCount;   // points sampled from mesh surface
 
+    // Mesh morph rendering (mesh-to-mesh case)
+    static std::vector<glm::vec3> morphSrcVerts;  // source triangle vertices (3 per tri)
+    static std::vector<glm::vec3> morphDstVerts;  // matched destination vertices
+    static bool    useMeshMorph;
+    static GLuint  morphVAO;
+    static GLuint  morphVBOPos;
+    static GLuint  morphVBONorm;
+
     // Shader Program
     static GLuint shaderProgram;
 

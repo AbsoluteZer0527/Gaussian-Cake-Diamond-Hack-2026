@@ -1,9 +1,8 @@
 #include "ParticleSystem.h"
-#include <glm/gtc/type_ptr.hpp>
 #include "imgui.h"
-#include <iostream>
 
 ParticleSystem::ParticleSystem() {
+<<<<<<< Updated upstream
     particleRadius  = 0.08f;
     useOTPositions  = false;
     particleShader  = 0;
@@ -40,6 +39,10 @@ void ParticleSystem::InitGL() {
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
+=======
+    particleRadius = 0.03f;
+    useOTPositions = false;
+>>>>>>> Stashed changes
 }
 
 void ParticleSystem::SpawnFromGaussian(const Gaussian& g, int N, unsigned int seed) {
@@ -54,13 +57,13 @@ void ParticleSystem::SpawnFromGaussian(const Gaussian& g, int N, unsigned int se
         transportPositions.push_back(pos);
     }
     useOTPositions = false;
-    std::cerr << "ParticleSystem::SpawnFromGaussian: spawned " << particles.size() << " particles\n";
 }
 
 void ParticleSystem::Update(float deltaTime) {
     if (!useOTPositions) return;
-    for (size_t i = 0; i < particles.size() && i < transportPositions.size(); i++) {
+    for (size_t i = 0; i < particles.size() && i < transportPositions.size(); i++)
         particles[i].position = transportPositions[i];
+<<<<<<< Updated upstream
     }
 }
 
@@ -131,11 +134,12 @@ glBindVertexArray(0);
 glDepthMask(GL_TRUE);
 glDisable(GL_BLEND);
 glUseProgram(0);
+=======
+>>>>>>> Stashed changes
 }
 
 void ParticleSystem::DrawGUI() {
     ImGui::Begin("Particle System");
     ImGui::Text("Active Particles: %d", (int)particles.size());
-    ImGui::SliderFloat("Particle Radius", &particleRadius, 1.0f, 1.0f);
     ImGui::End();
 }

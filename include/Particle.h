@@ -7,5 +7,5 @@ public:
     glm::vec4 color;   // rgba — assigned at spawn, read by Draw()
     float radius;
 
-    Particle(float radius = 0.1f);
+    Particle(float radius = 0.03f);
 };

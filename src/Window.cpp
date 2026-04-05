@@ -5,7 +5,15 @@
 #include "imgui_impl_opengl3.h"
 #include "OBJLoader.h"
 #include "MeshSampler.h"
+<<<<<<< Updated upstream
 #include <iostream>
+=======
+
+#include <filesystem>
+#include <algorithm>
+#include <random>
+#include <glm/gtc/type_ptr.hpp>
+>>>>>>> Stashed changes
 
 //Window Properties
 int Window::width;
@@ -24,10 +32,24 @@ Gaussian*        Window::gaussianB     = nullptr;
 OTMap*           Window::otMap         = nullptr;
 TransportAnimator* Window::animator    = nullptr;
 bool             Window::otMapComputed = false;
+<<<<<<< Updated upstream
 int              Window::particleCount = 1000;
 char             Window::objPathA[256] = {};
 char             Window::objPathB[256] = {};
+=======
+int              Window::particleCount = 2000;
+std::vector<std::string> Window::meshNames;
+std::vector<std::string> Window::meshPaths;
+int              Window::meshIndexA    = 0;
+int              Window::meshIndexB    = 0;
+>>>>>>> Stashed changes
 int              Window::sampleCount   = 2000;
+std::vector<glm::vec3> Window::morphSrcVerts;
+std::vector<glm::vec3> Window::morphDstVerts;
+bool             Window::useMeshMorph  = false;
+GLuint           Window::morphVAO      = 0;
+GLuint           Window::morphVBOPos   = 0;
+GLuint           Window::morphVBONorm  = 0;
 
 //Interaction Variables
 bool LeftDown, RightDown;
@@ -68,7 +90,29 @@ bool Window::initializeObjects() {
     otMap         = nullptr;
     animator      = new TransportAnimator();
     otMapComputed = false;
+<<<<<<< Updated upstream
     particleCount = 1000;
+=======
+    particleCount = 2000;
+    meshIndexA    = 0;
+    meshIndexB    = 0;
+    useMeshMorph  = false;
+
+    // Set up shared VAO/VBOs used for both mesh morph and blob point cloud
+    glGenVertexArrays(1, &morphVAO);
+    glGenBuffers(1, &morphVBOPos);
+    glGenBuffers(1, &morphVBONorm);
+    glBindVertexArray(morphVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, morphVBOPos);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, morphVBONorm);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(1);
+    glBindVertexArray(0);
+
+    ScanMeshes();
+>>>>>>> Stashed changes
 
     Cam->SetDistance(8.0f);
     Cam->SetIncline(-20.0f);
@@ -96,6 +140,9 @@ void Window::cleanUp() {
     delete gaussianB;
     delete otMap;
     delete animator;
+    glDeleteVertexArrays(1, &morphVAO);
+    glDeleteBuffers(1, &morphVBOPos);
+    glDeleteBuffers(1, &morphVBONorm);
     glDeleteProgram(shaderProgram);
 }
 
@@ -160,17 +207,67 @@ void Window::displayCallback(GLFWwindow* window) {
     glClearColor(83/255.0f, 203/255.0f, 243/255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    GLfloat light0_pos[] = {10.0f, 10.0f, 10.0f, 1.0f};
-    GLfloat light0_color[] = {1.0f, 0.8f, 0.8f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_POSITION, light0_pos);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_color);
+    glm::mat4 vp       = Cam->GetViewProjectMtx();
+    glm::mat4 identity = glm::mat4(1.0f);
 
-    GLfloat light1_pos[] = {-10.0f, 5.0f, -10.0f, 1.0f};
-    GLfloat light1_color[] = {0.8f, 0.8f, 1.0f, 1.0f};
-    glLightfv(GL_LIGHT1, GL_POSITION, light1_pos);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_color);
+    if (useMeshMorph && !particleSystem->transportPositions.empty()) {
+        // === Mesh morph: render lerped triangles with computed face normals ===
+        auto& verts = particleSystem->transportPositions;
+        int numVerts = (int)verts.size();
 
+<<<<<<< Updated upstream
     particleSystem->Draw(Cam->GetViewProjectMtx(), Window::height);
+=======
+        std::vector<glm::vec3> normals(numVerts, glm::vec3(0, 1, 0));
+        for (int i = 0; i + 2 < numVerts; i += 3) {
+            glm::vec3 e1 = verts[i+1] - verts[i];
+            glm::vec3 e2 = verts[i+2] - verts[i];
+            glm::vec3 n  = glm::cross(e1, e2);
+            float len = glm::length(n);
+            if (len > 1e-6f) n /= len;
+            normals[i] = normals[i+1] = normals[i+2] = n;
+        }
+
+        glBindBuffer(GL_ARRAY_BUFFER, morphVBOPos);
+        glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(glm::vec3), verts.data(), GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, morphVBONorm);
+        glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(glm::vec3), normals.data(), GL_DYNAMIC_DRAW);
+
+        glUseProgram(shaderProgram);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "viewProj"), 1, GL_FALSE, glm::value_ptr(vp));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"),    1, GL_FALSE, glm::value_ptr(identity));
+        glUniform3f(glGetUniformLocation(shaderProgram, "DiffuseColor"), 0.85f, 0.85f, 0.92f);
+
+        glBindVertexArray(morphVAO);
+        glDrawArrays(GL_TRIANGLES, 0, numVerts);
+        glBindVertexArray(0);
+        glUseProgram(0);
+
+    } else if (!particleSystem->particles.empty()) {
+        // === Gaussian blob: render particle cloud as lit points ===
+        int numPts = (int)particleSystem->particles.size();
+        std::vector<glm::vec3> positions(numPts);
+        std::vector<glm::vec3> normals(numPts, glm::vec3(0.577f, 0.577f, 0.577f));
+        for (int i = 0; i < numPts; i++)
+            positions[i] = particleSystem->particles[i].position;
+
+        glBindBuffer(GL_ARRAY_BUFFER, morphVBOPos);
+        glBufferData(GL_ARRAY_BUFFER, numPts * sizeof(glm::vec3), positions.data(), GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, morphVBONorm);
+        glBufferData(GL_ARRAY_BUFFER, numPts * sizeof(glm::vec3), normals.data(), GL_DYNAMIC_DRAW);
+
+        glUseProgram(shaderProgram);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "viewProj"), 1, GL_FALSE, glm::value_ptr(vp));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"),    1, GL_FALSE, glm::value_ptr(identity));
+        glUniform3f(glGetUniformLocation(shaderProgram, "DiffuseColor"), 0.9f, 0.9f, 0.9f);
+
+        glPointSize(4.0f);
+        glBindVertexArray(morphVAO);
+        glDrawArrays(GL_POINTS, 0, numPts);
+        glBindVertexArray(0);
+        glUseProgram(0);
+    }
+>>>>>>> Stashed changes
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -258,37 +355,92 @@ void Window::ComputeOTAndSpawnParticles() {
     bool hasMeshB = (objPathB[0] != '\0');
 
     if (hasMeshA && hasMeshB) {
-        // === Discrete mesh-to-mesh OT ===
-        // Particles start exactly on mesh A surface, end exactly on mesh B surface.
-        // The Gaussian OT map is not used — the greedy matching IS the transport.
+        // === Mesh morph: render actual triangles lerped from A to B ===
         std::vector<Triangle> trisA, trisB;
+<<<<<<< Updated upstream
         if (!OBJLoader::Load(objPathA, trisA)) return;
         if (!OBJLoader::Load(objPathB, trisB)) return;
+=======
+        if (!OBJLoader::Load(pathA, trisA)) return;
+        if (!OBJLoader::Load(pathB, trisB)) return;
+>>>>>>> Stashed changes
         OBJLoader::Normalize(trisA);
         OBJLoader::Normalize(trisB);
 
-        auto ptsA = MeshSampler::Sample(trisA, particleCount);
-        auto ptsB = MeshSampler::Sample(trisB, particleCount);
+        // Subsample trisA to keep per-frame CPU work reasonable
+        const int triLimit = 3000;
+        if ((int)trisA.size() > triLimit) {
+            std::mt19937 rng(42);
+            std::shuffle(trisA.begin(), trisA.end(), rng);
+            trisA.resize(triLimit);
+        }
 
-        auto endPts = GreedyDiscreteOT(ptsA, ptsB);
+        // Collect trisB vertices for nearest-neighbour matching
+        std::vector<glm::vec3> bVerts;
+        bVerts.reserve(trisB.size() * 3);
+        for (auto& tri : trisB) {
+            bVerts.push_back(tri.v0);
+            bVerts.push_back(tri.v1);
+            bVerts.push_back(tri.v2);
+        }
+        // Subsample bVerts so matching stays fast
+        const int bVertLimit = 9000;
+        if ((int)bVerts.size() > bVertLimit) {
+            float step = (float)bVerts.size() / bVertLimit;
+            std::vector<glm::vec3> sampled;
+            sampled.reserve(bVertLimit);
+            for (int i = 0; i < bVertLimit; i++)
+                sampled.push_back(bVerts[(int)(i * step)]);
+            bVerts = std::move(sampled);
+        }
 
-        // Place particles directly at mesh A surface positions
+        // For each triangle vertex in trisA, find the nearest vertex on trisB
+        morphSrcVerts.clear();
+        morphDstVerts.clear();
+        morphSrcVerts.reserve(trisA.size() * 3);
+        morphDstVerts.reserve(trisA.size() * 3);
+        for (auto& tri : trisA) {
+            glm::vec3 v[3] = { tri.v0, tri.v1, tri.v2 };
+            for (int k = 0; k < 3; k++) {
+                morphSrcVerts.push_back(v[k]);
+                float best = 1e30f;
+                glm::vec3 bestVert = bVerts[0];
+                for (auto& bv : bVerts) {
+                    glm::vec3 d = v[k] - bv;
+                    float dist = glm::dot(d, d);
+                    if (dist < best) { best = dist; bestVert = bv; }
+                }
+                morphDstVerts.push_back(bestVert);
+            }
+        }
+
+        // Feed morph verts into the animator so it drives transportProgress
         particleSystem->particles.clear();
-        particleSystem->transportPositions = ptsA;
-        for (const auto& pos : ptsA) {
-            Particle p(particleSystem->particleRadius);
-            p.position = pos;
+        particleSystem->transportPositions = morphSrcVerts;
+        for (auto& pos : morphSrcVerts) {
+            Particle p; p.position = pos;
             particleSystem->particles.push_back(p);
         }
 
+<<<<<<< Updated upstream
         AssignHeightColors(particleSystem);
 
         animator->InitializeWithEndPoints(ptsA, endPts);
+=======
+        useMeshMorph  = true;
+        otMapComputed = true;
+        animator->InitializeWithEndPoints(morphSrcVerts, morphDstVerts);
+>>>>>>> Stashed changes
         particleSystem->useOTPositions = true;
         animator->StartTransport();
 
     } else {
+<<<<<<< Updated upstream
         // === Gaussian OT (mesh → blob, blob → mesh, or blob → blob) ===
+=======
+        // === Gaussian OT (mesh → Gaussian or blob → blob) ===
+        useMeshMorph = false;
+>>>>>>> Stashed changes
         if (hasMeshA) {
             if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
         } else {
@@ -366,7 +518,7 @@ void Window::DrawMainGUI() {
     DrawGaussianSelector("Target (B)", objPathB);
 
     ImGui::Separator();
-    ImGui::SliderInt("Particles",    &particleCount, 100, 2000);
+    ImGui::SliderInt("Particles",    &particleCount, 100, 5000);
     ImGui::SliderInt("Mesh Samples", &sampleCount,   500, 10000);
 
     ImGui::Spacing();
@@ -388,8 +540,10 @@ void Window::DrawMainGUI() {
     ImGui::SameLine();
     if (ImGui::Button("Reset")) {
         animator->Reset();
+        useMeshMorph = false;
         particleSystem->useOTPositions = false;
         particleSystem->particles.clear();
+        otMapComputed = false;
     }
 
     ImGui::Separator();

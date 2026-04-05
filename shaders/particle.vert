@@ -1,6 +1,7 @@
 #version 330 core
 
 layout(location = 0) in vec3 aPos;
+<<<<<<< Updated upstream
 layout(location = 1) in vec4 aColor;
 
 uniform mat4  uViewProj;
@@ -14,4 +15,14 @@ void main() {
     // Scale world-space radius to screen pixels: farther away = smaller splat
     gl_PointSize = uPointRadius * uViewportHeight / gl_Position.w;
     vColor = aColor;
+=======
+
+uniform mat4  uViewProj;
+uniform float uPointRadius;
+uniform float uViewportHeight;
+
+void main() {
+    gl_Position  = uViewProj * vec4(aPos, 1.0);
+    gl_PointSize = uPointRadius * uViewportHeight / gl_Position.w;
+>>>>>>> Stashed changes
 }
