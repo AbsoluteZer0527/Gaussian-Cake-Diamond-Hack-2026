@@ -32,13 +32,13 @@ I only use raw code C++ and libraries(basic OpenGL, imgui UI, linear algebra lib
 
 The Gaussian optimal transport samples the mean and variance from the model, which yields better runtime and exact geometry morphing with cheap computation power: It's only linear algebra!
 
-\\(T(x)=m2​+A(x−m1​)\\)
+$T(x)=m2 ​+ A(x− m1​)$
 
 where m1 and m2 are the Gaussian means, and A encodes the covariance-based linear transformation.
 
 However,  the Greedy OT offers a simpler approach, looks better in animation, but it loses accuracy:
 
-\\(\sum_{i} \| x_i - y_{\sigma(i)} \|^2_{\text{Greedy}}\\)
+$\sum_{i}\| x_i - y_{\sigma(i)}\|^2_{\text{Greedy}}$
 
 This mapping can then be directly used to generate smooth mesh-to-mesh morphing animations.
 And therefore, this transformation could be simulated with computer animation, which could be expanded to mesh-to-mesh morphing animations.
@@ -72,9 +72,9 @@ Download the release, unzip it, and run the menv.exe.
 To import your own .obj models: Add to the `meshes` folder.
 
 ### Input Bindings
-ESC — Close application
-R — Reset camera to default position
-Left Drag — Rotate view (azimuth + incline)
-Right Drag — Zoom in/out
+* ESC — Close application
+* R — Reset camera to default position
+* Left Drag — Rotate view (azimuth + incline)
+* Right Drag — Zoom in/out
 
 Bear model credit: https://cse125.ucsd.edu/data/bear.html 
