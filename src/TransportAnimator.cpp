@@ -46,6 +46,14 @@ void TransportAnimator::Update(float deltaTime, std::vector<glm::vec3>& outPosit
 
 }
 
+void TransportAnimator::InitializeWithEndPoints(const std::vector<glm::vec3>& start,
+                                                const std::vector<glm::vec3>& end) {
+    startPos = start;
+    destPos  = end;
+    state = AnimationState::GAUSSIAN_A;
+    transportProgress = 0.0f;
+}
+
 void TransportAnimator::StartTransport() {
     if (state != AnimationState::GAUSSIAN_A) return;
     transportProgress = 0.0f;

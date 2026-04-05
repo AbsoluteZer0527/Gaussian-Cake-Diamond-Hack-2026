@@ -1,4 +1,5 @@
 C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/menv.dir
 C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CopyShaders.dir
+C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/CopyMeshes.dir
 C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/edit_cache.dir
 C:/Users/zhulu/Github/Gussian Cake Diamond Hack 2026/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir

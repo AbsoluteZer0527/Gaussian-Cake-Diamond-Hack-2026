@@ -198,32 +198,88 @@ static bool LoadMeshGaussian(const char* path, int N, Gaussian* g) {
     return true;
 }
 
+// Greedy approximate discrete OT: match each point in ptsA to the nearest
+// unmatched point in ptsB. O(N^2) — fine for N <= 2000 on a single Bake click.
+static std::vector<glm::vec3> GreedyDiscreteOT(
+    const std::vector<glm::vec3>& ptsA,
+    const std::vector<glm::vec3>& ptsB)
+{
+    int N = (int)std::min(ptsA.size(), ptsB.size());
+    std::vector<bool>    used(ptsB.size(), false);
+    std::vector<glm::vec3> result(N);
+
+    for (int i = 0; i < N; i++) {
+        float bestDist = 1e30f;
+        int   bestJ    = 0;
+        for (int j = 0; j < (int)ptsB.size(); j++) {
+            if (used[j]) continue;
+            glm::vec3 d = ptsA[i] - ptsB[j];
+            float dist = glm::dot(d, d); // squared distance — avoids sqrt
+            if (dist < bestDist) { bestDist = dist; bestJ = j; }
+        }
+        result[i]   = ptsB[bestJ];
+        used[bestJ] = true;
+    }
+    return result;
+}
+
 void Window::ComputeOTAndSpawnParticles() {
-    // Gaussian A — OBJ if path given, else preset
-    if (objPathA[0] != '\0') {
-        if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
+    bool hasMeshA = (objPathA[0] != '\0');
+    bool hasMeshB = (objPathB[0] != '\0');
+
+    if (hasMeshA && hasMeshB) {
+        // === Discrete mesh-to-mesh OT ===
+        // Particles start exactly on mesh A surface, end exactly on mesh B surface.
+        // The Gaussian OT map is not used — the greedy matching IS the transport.
+        std::vector<Triangle> trisA, trisB;
+        if (!OBJLoader::Load(objPathA, trisA)) return;
+        if (!OBJLoader::Load(objPathB, trisB)) return;
+        OBJLoader::Normalize(trisA);
+        OBJLoader::Normalize(trisB);
+
+        auto ptsA = MeshSampler::Sample(trisA, particleCount);
+        auto ptsB = MeshSampler::Sample(trisB, particleCount);
+
+        auto endPts = GreedyDiscreteOT(ptsA, ptsB);
+
+        // Place particles directly at mesh A surface positions
+        particleSystem->particles.clear();
+        particleSystem->transportPositions = ptsA;
+        for (const auto& pos : ptsA) {
+            Particle p(particleSystem->particleRadius);
+            p.position = pos;
+            particleSystem->particles.push_back(p);
+        }
+
+        animator->InitializeWithEndPoints(ptsA, endPts);
+        particleSystem->useOTPositions = true;
+        animator->StartTransport();
+
     } else {
-        gaussianA->mean       = Eigen::Vector3d::Zero();
-        gaussianA->covariance = presets[presetIndexA].cov;
+        // === Gaussian OT (presets, or single mesh → Gaussian) ===
+        if (hasMeshA) {
+            if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
+        } else {
+            gaussianA->mean       = Eigen::Vector3d::Zero();
+            gaussianA->covariance = presets[presetIndexA].cov;
+        }
+
+        if (hasMeshB) {
+            if (!LoadMeshGaussian(objPathB, sampleCount, gaussianB)) return;
+        } else {
+            gaussianB->mean       = Eigen::Vector3d::Zero();
+            gaussianB->covariance = presets[presetIndexB].cov;
+        }
+
+        delete otMap;
+        otMap         = new OTMap(OptimalTransport::Compute(*gaussianA, *gaussianB));
+        otMapComputed = true;
+
+        particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
+        animator->Initialize(particleSystem->transportPositions, *otMap);
+        particleSystem->useOTPositions = true;
+        animator->StartTransport();
     }
-
-    // Gaussian B — OBJ if path given, else preset
-    if (objPathB[0] != '\0') {
-        if (!LoadMeshGaussian(objPathB, sampleCount, gaussianB)) return;
-    } else {
-        gaussianB->mean       = Eigen::Vector3d::Zero();
-        gaussianB->covariance = presets[presetIndexB].cov;
-    }
-
-    delete otMap;
-    otMap         = new OTMap(OptimalTransport::Compute(*gaussianA, *gaussianB));
-    otMapComputed = true;
-
-    particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
-
-    animator->Initialize(particleSystem->transportPositions, *otMap);
-    particleSystem->useOTPositions = true;
-    animator->StartTransport();
 }
 
 // Draw a Gaussian source selector: preset combo + optional OBJ path input.

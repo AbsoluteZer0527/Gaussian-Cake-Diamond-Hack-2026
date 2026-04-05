@@ -20,8 +20,12 @@ public:
 
     TransportAnimator();
 
-    //precompute all the optimal transport and store them.
+    // Gaussian OT path: apply OTMap to each start position to get destinations.
     void Initialize(const std::vector<glm::vec3>& startPositions, const OTMap& map);
+
+    // Discrete mesh OT path: start and end positions already matched externally.
+    void InitializeWithEndPoints(const std::vector<glm::vec3>& start,
+                                 const std::vector<glm::vec3>& end);
 
     //write interpolated position into outposition.
     void Update(float deltaTime, std::vector<glm::vec3>& outPositions);
