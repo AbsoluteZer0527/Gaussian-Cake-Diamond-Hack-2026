@@ -1,0 +1,48 @@
+#pragma once
+#include "core.h"
+#include "OptimalTransport.h"
+#include <vector>
+
+enum class AnimationState {
+    GAUSSIAN_A,
+    BAKING,
+    GAUSSIAN_B
+};
+
+class TransportAnimator {
+public:
+    AnimationState state;
+    float transportDuration;   // seconds for a full bake, default 3.0
+    float transportProgress;   // 0.0 -> 1.0 
+
+    enum class EasingMode { LINEAR, EASE_IN_OUT, BOUNCE };
+    EasingMode easingMode;
+
+    TransportAnimator();
+
+    //precompute all the optimal transport and store them.
+    void Initialize(const std::vector<glm::vec3>& startPositions, const OTMap& map);
+
+    //write interpolated position into outposition.
+    void Update(float deltaTime, std::vector<glm::vec3>& outPositions);
+
+    //A -> B transport. Only fires from GAUSSIAN_A.
+    void StartTransport();
+
+    //B -> A return. Only fires from GAUSSIAN_B.
+    void ReverseTransport();
+
+    //reset back to GAUSSIAN_A positions.
+    void Reset();
+
+    bool IsTransporting() const { return state == AnimationState::BAKING; }
+    float GetProgress()   const { return transportProgress; }
+
+    void DrawGUI();
+
+private:
+    std::vector<glm::vec3> startPos;
+    std::vector<glm::vec3> destPos;
+
+    float ApplyEasing(float t) const;
+};

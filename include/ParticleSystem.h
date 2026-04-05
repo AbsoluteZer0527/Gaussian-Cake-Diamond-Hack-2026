@@ -2,9 +2,10 @@
 #include "core.h"
 #include <vector>
 #include "Particle.h"
+#include "Gaussian.h"
 
 /* 
-Spawn particles in a initial random position using Guassian
+Spawn particles in a initial random position using Gaussian
 assign a random life span
 for each particle, mannage gravity, aerodynamic drag, 
 ground collision constrant
@@ -43,6 +44,13 @@ public:
     float friction;
     float groundHeight;
     
+    // OT transport mode — positions driven by TransportAnimator
+    bool useOTPositions;
+    std::vector<glm::vec3> transportPositions;
+
+    // Spawn N immortal particles sampled from a Gaussian (clears existing particles)
+    void SpawnFromGaussian(const Gaussian& g, int N, unsigned int seed = 42);
+
     void Update(float deltaTime);
     void SpawnParticles();
     void ApplyGravity(Particle& p); //basic gravity

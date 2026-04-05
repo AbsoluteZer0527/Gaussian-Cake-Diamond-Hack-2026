@@ -19,7 +19,7 @@ set(
     src/imgui_impl_opengl3.cpp
     src/Particle.cpp
     src/ParticleSystem.cpp
-    src/Guassian.cpp
+    src/Gaussian.cpp
     src/SpringDamper.cpp
 )
 

@@ -1,0 +1,112 @@
+#include "TransportAnimator.h"
+#include "imgui.h"
+#include <cmath>
+#include <algorithm>
+
+TransportAnimator::TransportAnimator() {
+    state = AnimationState::GAUSSIAN_A;
+    transportDuration = 3.0f;
+    transportProgress = 0.0f;
+    easingMode = EasingMode::EASE_IN_OUT;
+}
+
+void TransportAnimator::Initialize(const std::vector<glm::vec3>& startPositions, const OTMap& map) {
+    startPos = startPositions;
+    destPos.clear();
+    destPos.reserve(startPositions.size());
+
+    //compute OT of every p and add them to the map.
+    for (const auto& p : startPositions){
+        destPos.push_back(OptimalTransport::Apply(map, p));
+    }
+
+    state = AnimationState::GAUSSIAN_A;
+    transportProgress = 0.0f;
+}
+
+void TransportAnimator::Update(float deltaTime, std::vector<glm::vec3>& outPositions) {
+    if (state != AnimationState::BAKING) return;
+
+    transportProgress += deltaTime / transportDuration;
+
+    //once the animation finish, update state to B.
+    if (transportProgress >= 1.0f) {
+        transportProgress = 1.0f;
+        outPositions = destPos;
+        state = AnimationState::GAUSSIAN_B;
+        return;
+    }
+
+    float t = ApplyEasing(transportProgress);
+
+    outPositions.resize(startPos.size());
+    for (int i = 0; i < (int)startPos.size(); i++){
+        outPositions[i] = glm::mix(startPos[i], destPos[i], t);
+    }
+
+}
+
+void TransportAnimator::StartTransport() {
+    if (state != AnimationState::GAUSSIAN_A) return;
+    transportProgress = 0.0f;
+    state = AnimationState::BAKING;
+}
+
+void TransportAnimator::ReverseTransport() {
+    if (state != AnimationState::GAUSSIAN_B) return;
+    //reverse animation by swapping start/dest
+    std::swap(startPos, destPos);
+    transportProgress = 0.0f;
+    state = AnimationState::BAKING;
+}
+
+void TransportAnimator::Reset() {
+    state = AnimationState::GAUSSIAN_A;
+    transportProgress = 0.0f;
+}
+
+float TransportAnimator::ApplyEasing(float t) const {
+    //fun variation of the animations.
+    switch (easingMode) {
+        case EasingMode::LINEAR:
+            return t;
+
+        case EasingMode::EASE_IN_OUT:
+            // Smoothstep: slow start, fast middle, slow end
+            return t < 0.5f
+                ? 2.0f * t * t
+                : 1.0f - std::pow(-2.0f * t + 2.0f, 2.0f) / 2.0f;
+
+        case EasingMode::BOUNCE: {
+            // Ease in, then a small overshoot and settle
+            if (t < 0.8f) {
+                float s = t / 0.8f;
+                return 0.9f * s * s;
+            } else {
+                float s = (t - 0.8f) / 0.2f;
+                // Goes to 1.08 then back to 1.0
+                return 0.9f + 0.18f * s - 0.08f * s * s;
+            }
+        }
+    }
+    return t;
+}
+
+void TransportAnimator::DrawGUI() {
+    ImGui::Separator();
+    ImGui::Text("Transport State: %s",
+        state == AnimationState::GAUSSIAN_A ? "Gaussian A" :
+        state == AnimationState::BAKING ? "Baking...":"Gaussian B");
+
+    if (state == AnimationState::BAKING){
+        ImGui::ProgressBar(transportProgress, ImVec2(-1, 0), "Baking...");
+    }
+
+    ImGui::SliderFloat("Duration", &transportDuration, 0.5f, 10.0f);
+
+    const char* modes[] = {"Linear", "Ease In/Out", "Bounce"};
+    int modeIdx = (int)easingMode;
+    if (ImGui::Combo("Easing", &modeIdx, modes, 3))
+        easingMode = (EasingMode)modeIdx;
+
+}

@@ -1,0 +1,1 @@
+Reference: https://alexhwilliams.info/itsneuronalblog/2020/10/09/optimal-transport/ 

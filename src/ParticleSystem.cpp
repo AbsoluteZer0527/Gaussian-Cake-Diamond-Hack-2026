@@ -29,6 +29,22 @@ ParticleSystem::ParticleSystem(){
     friction = 0.3f;
     groundHeight = 0.0f;
 
+    useOTPositions = false;
+}
+
+void ParticleSystem::SpawnFromGaussian(const Gaussian& g, int N, unsigned int seed) {
+    particles.clear();
+    transportPositions.clear();
+
+    auto pts = g.Sample(N, seed);
+    for (const auto& pos : pts) {
+        Particle p(9999.0f, particleRadius); // effectively immortal
+        p.position = pos;
+        p.velocity = glm::vec3(0.0f);
+        particles.push_back(p);
+        transportPositions.push_back(pos);
+    }
+    useOTPositions = false;
 }
 
 // When a particle is created, one must set its initial position, velocity, and other attributes
@@ -102,6 +118,15 @@ void ParticleSystem::ApplyDrag(Particle& p){
 }
 
 void ParticleSystem::Update(float deltaTime){
+
+    // OT mode: positions are driven externally by TransportAnimator
+    if (useOTPositions) {
+        for (size_t i = 0; i < particles.size() && i < transportPositions.size(); i++) {
+            particles[i].position = transportPositions[i];
+            particles[i].life = particles[i].maxLife; // keep alive indefinitely
+        }
+        return;
+    }
 
     // Determine how many new particles to create this frame
     float num=deltaTime*emitRate+spawnAccumulator;
