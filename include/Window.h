@@ -29,6 +29,11 @@ public:
     static int presetIndexA;
     static int presetIndexB;
 
+    // OBJ mesh input — empty string means "use preset"
+    static char objPathA[256];
+    static char objPathB[256];
+    static int  sampleCount;   // points sampled from mesh surface
+
     // Shader Program
     static GLuint shaderProgram;
 

@@ -63,3 +63,10 @@ add_custom_target(CopyShaders ALL
 	"${CMAKE_BINARY_DIR}/shaders"
 )
 add_dependencies(menv CopyShaders)
+
+add_custom_target(CopyMeshes ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${PROJECT_SOURCE_DIR}/meshes"
+    "${CMAKE_BINARY_DIR}/meshes"
+)
+add_dependencies(menv CopyMeshes)

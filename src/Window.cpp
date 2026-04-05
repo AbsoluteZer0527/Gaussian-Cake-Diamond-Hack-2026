@@ -3,6 +3,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "OBJLoader.h"
+#include "MeshSampler.h"
 
 //Window Properties
 int Window::width;
@@ -21,9 +23,12 @@ Gaussian*        Window::gaussianB     = nullptr;
 OTMap*           Window::otMap         = nullptr;
 TransportAnimator* Window::animator    = nullptr;
 bool             Window::otMapComputed = false;
-int              Window::particleCount = 500;
+int              Window::particleCount = 1000;
 int              Window::presetIndexA  = 0;
 int              Window::presetIndexB  = 1;
+char             Window::objPathA[256] = {};
+char             Window::objPathB[256] = {};
+int              Window::sampleCount   = 2000;
 
 //Interaction Variables
 bool LeftDown, RightDown;
@@ -68,12 +73,18 @@ bool Window::initializeObjects() {
     otMap         = nullptr;
     animator      = new TransportAnimator();
     otMapComputed = false;
-    particleCount = 500;
+    particleCount = 1000;
     presetIndexA  = 0;
     presetIndexB  = 1;
 
     Cam->SetDistance(8.0f);
     Cam->SetIncline(-20.0f);
+
+    // Spawn initial shape so the scene isn't empty on startup
+    gaussianA->mean       = Eigen::Vector3d::Zero();
+    gaussianA->covariance = presets[0].cov;
+    particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
+
     return true;
 }
 
@@ -176,11 +187,33 @@ void Window::displayCallback(GLFWwindow* window) {
 }
 
 // OT pipeline
+
+// Load an OBJ and fit a Gaussian to its surface. Returns false on failure.
+static bool LoadMeshGaussian(const char* path, int N, Gaussian* g) {
+    std::vector<Triangle> tris;
+    if (!OBJLoader::Load(path, tris)) return false;
+    OBJLoader::Normalize(tris);
+    auto pts = MeshSampler::Sample(tris, N);
+    g->FitFromPoints(pts);
+    return true;
+}
+
 void Window::ComputeOTAndSpawnParticles() {
-    gaussianA->mean       = Eigen::Vector3d::Zero();
-    gaussianA->covariance = presets[presetIndexA].cov;
-    gaussianB->mean       = Eigen::Vector3d::Zero();
-    gaussianB->covariance = presets[presetIndexB].cov;
+    // Gaussian A — OBJ if path given, else preset
+    if (objPathA[0] != '\0') {
+        if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
+    } else {
+        gaussianA->mean       = Eigen::Vector3d::Zero();
+        gaussianA->covariance = presets[presetIndexA].cov;
+    }
+
+    // Gaussian B — OBJ if path given, else preset
+    if (objPathB[0] != '\0') {
+        if (!LoadMeshGaussian(objPathB, sampleCount, gaussianB)) return;
+    } else {
+        gaussianB->mean       = Eigen::Vector3d::Zero();
+        gaussianB->covariance = presets[presetIndexB].cov;
+    }
 
     delete otMap;
     otMap         = new OTMap(OptimalTransport::Compute(*gaussianA, *gaussianB));
@@ -193,23 +226,50 @@ void Window::ComputeOTAndSpawnParticles() {
     animator->StartTransport();
 }
 
-void Window::DrawMainGUI() {
-    ImGui::Begin("Gaussian Cake Diamond Hack 2026");
+// Draw a Gaussian source selector: preset combo + optional OBJ path input.
+static void DrawGaussianSelector(const char* label, int& presetIdx, char* pathBuf,
+                                  const char** presetNames, int count) {
+    ImGui::Text("%s:", label);
+    ImGui::PushID(label);
 
-    ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.7f, 1.0f), "Gaussian Cake Diamond Hack 2026");
+    bool usingMesh = (pathBuf[0] != '\0');
+
+    // Preset combo (greyed out when a mesh path is entered)
+    if (usingMesh) ImGui::BeginDisabled();
+    ImGui::Combo("##preset", &presetIdx, presetNames, count);
+    if (usingMesh) ImGui::EndDisabled();
+
+    // OBJ path input + clear button
+    ImGui::SetNextItemWidth(-60);
+    ImGui::InputText("##obj", pathBuf, 256);
+    ImGui::SameLine();
+    if (ImGui::Button("Clear"))
+        pathBuf[0] = '\0';
+
+    if (usingMesh)
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh loaded");
+    else
+        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  using preset");
+
+    ImGui::PopID();
+}
+
+void Window::DrawMainGUI() {
+    ImGui::Begin("Gaussian Cake");
+
+    ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.7f, 1.0f), "Gaussian Cake");
     ImGui::Separator();
 
-    // Preset selectors
     const char* presetNames[presetCount];
     for (int i = 0; i < presetCount; i++) presetNames[i] = presets[i].name;
 
-    ImGui::Text("Source (A):");
-    ImGui::Combo("##presetA", &presetIndexA, presetNames, presetCount);
+    DrawGaussianSelector("Source (A)", presetIndexA, objPathA, presetNames, presetCount);
+    ImGui::Spacing();
+    DrawGaussianSelector("Target (B)", presetIndexB, objPathB, presetNames, presetCount);
 
-    ImGui::Text("Target (B):");
-    ImGui::Combo("##presetB", &presetIndexB, presetNames, presetCount);
-
-    ImGui::SliderInt("Particles", &particleCount, 100, 2000);
+    ImGui::Separator();
+    ImGui::SliderInt("Particles",    &particleCount, 100, 2000);
+    ImGui::SliderInt("Mesh Samples", &sampleCount,   500, 10000);
 
     ImGui::Spacing();
     ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(1.0f, 0.4f, 0.7f, 1.0f));
@@ -220,7 +280,6 @@ void Window::DrawMainGUI() {
     ImGui::PopStyleColor(3);
 
     ImGui::Spacing();
-    // Transport state + progress bar
     animator->DrawGUI();
 
     ImGui::Spacing();
@@ -236,7 +295,6 @@ void Window::DrawMainGUI() {
     }
 
     ImGui::Separator();
-    // Particle radius passthrough
     ImGui::SliderFloat("Particle Radius", &particleSystem->particleRadius, 0.01f, 1.0f);
 
     ImGui::End();

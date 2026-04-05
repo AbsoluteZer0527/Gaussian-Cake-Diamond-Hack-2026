@@ -3,7 +3,7 @@
 #include "imgui.h"
 
 ParticleSystem::ParticleSystem() {
-    particleRadius = 0.1f;
+    particleRadius = 0.03f;
     useOTPositions = false;
 }
 
@@ -69,20 +69,6 @@ void ParticleSystem::Draw(glm::mat4 viewProjection) {
         glPopMatrix();
     }
     glDisable(GL_LIGHTING);
-
-    // ground plane
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(viewProjection));
-    glColor3f(84/255.0f, 120/255.0f, 255/255.0f);
-    glBegin(GL_QUADS);
-    glVertex3f(-20, 0, -20);
-    glVertex3f( 20, 0, -20);
-    glVertex3f( 20, 0,  20);
-    glVertex3f(-20, 0,  20);
-    glEnd();
-    glPopMatrix();
-
-    glEnable(GL_LIGHTING);
 }
 
 void ParticleSystem::DrawGUI() {
