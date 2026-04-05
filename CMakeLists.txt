@@ -52,6 +52,7 @@ link_directories(
 
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} glew32s.lib glfw3)
@@ -64,9 +65,13 @@ add_custom_target(CopyShaders ALL
 )
 add_dependencies(menv CopyShaders)
 
-add_custom_target(CopyMeshes ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${PROJECT_SOURCE_DIR}/meshes"
-    "${CMAKE_BINARY_DIR}/meshes"
-)
+if(EXISTS "${CMAKE_SOURCE_DIR}/meshes")
+    add_custom_target(CopyMeshes ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/meshes"
+        "${CMAKE_BINARY_DIR}/meshes"
+    )
+    add_dependencies(${PROJECT_NAME} CopyMeshes)
+endif()
+
 add_dependencies(menv CopyMeshes)

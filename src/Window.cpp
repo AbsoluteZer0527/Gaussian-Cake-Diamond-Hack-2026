@@ -6,6 +6,9 @@
 #include "OBJLoader.h"
 #include "MeshSampler.h"
 
+#include <filesystem>
+#include <algorithm>
+
 //Window Properties
 int Window::width;
 int Window::height;
@@ -24,10 +27,10 @@ OTMap*           Window::otMap         = nullptr;
 TransportAnimator* Window::animator    = nullptr;
 bool             Window::otMapComputed = false;
 int              Window::particleCount = 1000;
-int              Window::presetIndexA  = 0;
-int              Window::presetIndexB  = 1;
-char             Window::objPathA[256] = {};
-char             Window::objPathB[256] = {};
+std::vector<std::string> Window::meshNames;
+std::vector<std::string> Window::meshPaths;
+int              Window::meshIndexA    = 0;
+int              Window::meshIndexB    = 0;
 int              Window::sampleCount   = 2000;
 
 //Interaction Variables
@@ -37,21 +40,33 @@ int MouseX, MouseY;
 //The shader program id
 GLuint Window::shaderProgram;
 
-//Gaussian presets (diagonal covariance, mean at origin)
-//A cake built by gaussian
-struct GaussianPreset {
-    const char* name;
-    Eigen::Matrix3d cov;
-};
+// Default blob: isotropic 3D Gaussian (no color, no named presets)
+static const Eigen::Matrix3d blobCovariance = Eigen::Vector3d(1.0, 1.0, 1.0).asDiagonal();
 
-static GaussianPreset presets[] = {
-    { "Cake Tier",       Eigen::Vector3d(2.0, 0.3, 2.0).asDiagonal() },  // flat disc
-    { "Diamond",         Eigen::Vector3d(0.5, 2.5, 0.5).asDiagonal() },  // tall spike
-    { "Frosting Sphere", Eigen::Vector3d(1.5, 1.5, 1.5).asDiagonal() },  // isotropic
-    { "Sprinkle Disc",   Eigen::Vector3d(3.0, 0.1, 3.0).asDiagonal() },  // very flat
-};
-static const int presetCount = (int)(sizeof(presets) / sizeof(presets[0]));
+// Scan the meshes/ directory and populate Window::meshNames / meshPaths.
+// Index 0 is always the "blob" sentinel (no path).
+static void ScanMeshes() {
+    Window::meshNames.clear();
+    Window::meshPaths.clear();
 
+    namespace fs = std::filesystem;
+    std::string meshDir = "meshes";
+
+    if (fs::is_directory(meshDir)) {
+        std::vector<std::string> found;
+        for (const auto& entry : fs::directory_iterator(meshDir)) {
+            if (entry.is_regular_file() &&
+                entry.path().extension() == ".obj") {
+                found.push_back(entry.path().string());
+            }
+        }
+        std::sort(found.begin(), found.end());
+        for (const auto& p : found) {
+            Window::meshPaths.push_back(p);
+            Window::meshNames.push_back(fs::path(p).filename().string());
+        }
+    }
+}
 
 // Constructors and desctructors
 bool Window::initializeProgram() {
@@ -74,15 +89,17 @@ bool Window::initializeObjects() {
     animator      = new TransportAnimator();
     otMapComputed = false;
     particleCount = 1000;
-    presetIndexA  = 0;
-    presetIndexB  = 1;
+    meshIndexA    = 0;
+    meshIndexB    = 0;
+
+    ScanMeshes();
 
     Cam->SetDistance(8.0f);
     Cam->SetIncline(-20.0f);
 
-    // Spawn initial shape so the scene isn't empty on startup
+    // Spawn initial blob so the scene isn't empty on startup
     gaussianA->mean       = Eigen::Vector3d::Zero();
-    gaussianA->covariance = presets[0].cov;
+    gaussianA->covariance = blobCovariance;
     particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
 
     return true;
@@ -198,58 +215,112 @@ static bool LoadMeshGaussian(const char* path, int N, Gaussian* g) {
     return true;
 }
 
-void Window::ComputeOTAndSpawnParticles() {
-    // Gaussian A — OBJ if path given, else preset
-    if (objPathA[0] != '\0') {
-        if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
-    } else {
-        gaussianA->mean       = Eigen::Vector3d::Zero();
-        gaussianA->covariance = presets[presetIndexA].cov;
+// Greedy approximate discrete OT: match each point in ptsA to the nearest
+// unmatched point in ptsB. O(N^2) — fine for N <= 2000 on a single Bake click.
+static std::vector<glm::vec3> GreedyDiscreteOT(
+    const std::vector<glm::vec3>& ptsA,
+    const std::vector<glm::vec3>& ptsB)
+{
+    int N = (int)std::min(ptsA.size(), ptsB.size());
+    std::vector<bool>    used(ptsB.size(), false);
+    std::vector<glm::vec3> result(N);
+
+    for (int i = 0; i < N; i++) {
+        float bestDist = 1e30f;
+        int   bestJ    = 0;
+        for (int j = 0; j < (int)ptsB.size(); j++) {
+            if (used[j]) continue;
+            glm::vec3 d = ptsA[i] - ptsB[j];
+            float dist = glm::dot(d, d); // squared distance — avoids sqrt
+            if (dist < bestDist) { bestDist = dist; bestJ = j; }
+        }
+        result[i]   = ptsB[bestJ];
+        used[bestJ] = true;
     }
-
-    // Gaussian B — OBJ if path given, else preset
-    if (objPathB[0] != '\0') {
-        if (!LoadMeshGaussian(objPathB, sampleCount, gaussianB)) return;
-    } else {
-        gaussianB->mean       = Eigen::Vector3d::Zero();
-        gaussianB->covariance = presets[presetIndexB].cov;
-    }
-
-    delete otMap;
-    otMap         = new OTMap(OptimalTransport::Compute(*gaussianA, *gaussianB));
-    otMapComputed = true;
-
-    particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
-
-    animator->Initialize(particleSystem->transportPositions, *otMap);
-    particleSystem->useOTPositions = true;
-    animator->StartTransport();
+    return result;
 }
 
-// Draw a Gaussian source selector: preset combo + optional OBJ path input.
-static void DrawGaussianSelector(const char* label, int& presetIdx, char* pathBuf,
-                                  const char** presetNames, int count) {
+void Window::ComputeOTAndSpawnParticles() {
+    // meshIndex 0 = blob; 1..N = meshPaths[index-1]
+    bool hasMeshA = (meshIndexA > 0 && meshIndexA <= (int)meshPaths.size());
+    bool hasMeshB = (meshIndexB > 0 && meshIndexB <= (int)meshPaths.size());
+    const std::string& pathA = hasMeshA ? meshPaths[meshIndexA - 1] : "";
+    const std::string& pathB = hasMeshB ? meshPaths[meshIndexB - 1] : "";
+
+    if (hasMeshA && hasMeshB) {
+        // === Discrete mesh-to-mesh OT ===
+        // Particles start exactly on mesh A surface, end exactly on mesh B surface.
+        // The Gaussian OT map is not used — the greedy matching IS the transport.
+        std::vector<Triangle> trisA, trisB;
+        if (!OBJLoader::Load(pathA.c_str(), trisA)) return;
+        if (!OBJLoader::Load(pathB.c_str(), trisB)) return;
+        OBJLoader::Normalize(trisA);
+        OBJLoader::Normalize(trisB);
+
+        auto ptsA = MeshSampler::Sample(trisA, particleCount);
+        auto ptsB = MeshSampler::Sample(trisB, particleCount);
+
+        auto endPts = GreedyDiscreteOT(ptsA, ptsB);
+
+        // Place particles directly at mesh A surface positions
+        particleSystem->particles.clear();
+        particleSystem->transportPositions = ptsA;
+        for (const auto& pos : ptsA) {
+            Particle p(particleSystem->particleRadius);
+            p.position = pos;
+            particleSystem->particles.push_back(p);
+        }
+
+        animator->InitializeWithEndPoints(ptsA, endPts);
+        particleSystem->useOTPositions = true;
+        animator->StartTransport();
+
+    } else {
+        // === Gaussian OT (mesh → Gaussian or blob → blob) ===
+        if (hasMeshA) {
+            if (!LoadMeshGaussian(pathA.c_str(), sampleCount, gaussianA)) return;
+        } else {
+            gaussianA->mean       = Eigen::Vector3d::Zero();
+            gaussianA->covariance = blobCovariance;
+        }
+
+        if (hasMeshB) {
+            if (!LoadMeshGaussian(pathB.c_str(), sampleCount, gaussianB)) return;
+        } else {
+            gaussianB->mean       = Eigen::Vector3d::Zero();
+            gaussianB->covariance = blobCovariance;
+        }
+
+        delete otMap;
+        otMap         = new OTMap(OptimalTransport::Compute(*gaussianA, *gaussianB));
+        otMapComputed = true;
+
+        particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
+        animator->Initialize(particleSystem->transportPositions, *otMap);
+        particleSystem->useOTPositions = true;
+        animator->StartTransport();
+    }
+}
+
+// Draw a mesh selector combo: first entry is the blob default, rest are scanned .obj files.
+static void DrawGaussianSelector(const char* label, int& meshIndex) {
     ImGui::Text("%s:", label);
     ImGui::PushID(label);
 
-    bool usingMesh = (pathBuf[0] != '\0');
+    // Build list: "(blob)" + mesh filenames
+    int total = 1 + (int)Window::meshNames.size();
+    auto getter = [](void* data, int idx, const char** out) -> bool {
+        auto* names = static_cast<std::vector<std::string>*>(data);
+        if (idx == 0) { *out = "(blob)"; return true; }
+        if (idx - 1 < (int)names->size()) { *out = (*names)[idx - 1].c_str(); return true; }
+        return false;
+    };
+    ImGui::Combo("##mesh", &meshIndex, getter, &Window::meshNames, total);
 
-    // Preset combo (greyed out when a mesh path is entered)
-    if (usingMesh) ImGui::BeginDisabled();
-    ImGui::Combo("##preset", &presetIdx, presetNames, count);
-    if (usingMesh) ImGui::EndDisabled();
-
-    // OBJ path input + clear button
-    ImGui::SetNextItemWidth(-60);
-    ImGui::InputText("##obj", pathBuf, 256);
-    ImGui::SameLine();
-    if (ImGui::Button("Clear"))
-        pathBuf[0] = '\0';
-
-    if (usingMesh)
-        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh loaded");
+    if (meshIndex > 0)
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh selected");
     else
-        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  using preset");
+        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  blob (default)");
 
     ImGui::PopID();
 }
@@ -260,12 +331,9 @@ void Window::DrawMainGUI() {
     ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.7f, 1.0f), "Gaussian Cake");
     ImGui::Separator();
 
-    const char* presetNames[presetCount];
-    for (int i = 0; i < presetCount; i++) presetNames[i] = presets[i].name;
-
-    DrawGaussianSelector("Source (A)", presetIndexA, objPathA, presetNames, presetCount);
+    DrawGaussianSelector("Source (A)", meshIndexA);
     ImGui::Spacing();
-    DrawGaussianSelector("Target (B)", presetIndexB, objPathB, presetNames, presetCount);
+    DrawGaussianSelector("Target (B)", meshIndexB);
 
     ImGui::Separator();
     ImGui::SliderInt("Particles",    &particleCount, 100, 2000);
