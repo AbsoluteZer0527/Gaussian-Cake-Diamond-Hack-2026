@@ -26,10 +26,8 @@ public:
     static TransportAnimator* animator;
     static bool otMapComputed;
     static int particleCount;
-    static int presetIndexA;
-    static int presetIndexB;
 
-    // OBJ mesh input — empty string means "use preset"
+    // OBJ mesh input — empty string means "use default blob"
     static char objPathA[256];
     static char objPathB[256];
     static int  sampleCount;   // points sampled from mesh surface

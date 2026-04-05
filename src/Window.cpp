@@ -24,8 +24,6 @@ OTMap*           Window::otMap         = nullptr;
 TransportAnimator* Window::animator    = nullptr;
 bool             Window::otMapComputed = false;
 int              Window::particleCount = 1000;
-int              Window::presetIndexA  = 0;
-int              Window::presetIndexB  = 1;
 char             Window::objPathA[256] = {};
 char             Window::objPathB[256] = {};
 int              Window::sampleCount   = 2000;
@@ -37,20 +35,8 @@ int MouseX, MouseY;
 //The shader program id
 GLuint Window::shaderProgram;
 
-//Gaussian presets (diagonal covariance, mean at origin)
-//A cake built by gaussian
-struct GaussianPreset {
-    const char* name;
-    Eigen::Matrix3d cov;
-};
-
-static GaussianPreset presets[] = {
-    { "Cake Tier",       Eigen::Vector3d(2.0, 0.3, 2.0).asDiagonal() },  // flat disc
-    { "Diamond",         Eigen::Vector3d(0.5, 2.5, 0.5).asDiagonal() },  // tall spike
-    { "Frosting Sphere", Eigen::Vector3d(1.5, 1.5, 1.5).asDiagonal() },  // isotropic
-    { "Sprinkle Disc",   Eigen::Vector3d(3.0, 0.1, 3.0).asDiagonal() },  // very flat
-};
-static const int presetCount = (int)(sizeof(presets) / sizeof(presets[0]));
+// Default blob: isotropic 3D Gaussian (no color, no named presets)
+static const Eigen::Matrix3d blobCovariance = Eigen::Vector3d(1.0, 1.0, 1.0).asDiagonal();
 
 
 // Constructors and desctructors
@@ -74,15 +60,13 @@ bool Window::initializeObjects() {
     animator      = new TransportAnimator();
     otMapComputed = false;
     particleCount = 1000;
-    presetIndexA  = 0;
-    presetIndexB  = 1;
 
     Cam->SetDistance(8.0f);
     Cam->SetIncline(-20.0f);
 
-    // Spawn initial shape so the scene isn't empty on startup
+    // Spawn initial blob so the scene isn't empty on startup
     gaussianA->mean       = Eigen::Vector3d::Zero();
-    gaussianA->covariance = presets[0].cov;
+    gaussianA->covariance = blobCovariance;
     particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
 
     return true;
@@ -261,14 +245,14 @@ void Window::ComputeOTAndSpawnParticles() {
             if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
         } else {
             gaussianA->mean       = Eigen::Vector3d::Zero();
-            gaussianA->covariance = presets[presetIndexA].cov;
+            gaussianA->covariance = blobCovariance;
         }
 
         if (hasMeshB) {
             if (!LoadMeshGaussian(objPathB, sampleCount, gaussianB)) return;
         } else {
             gaussianB->mean       = Eigen::Vector3d::Zero();
-            gaussianB->covariance = presets[presetIndexB].cov;
+            gaussianB->covariance = blobCovariance;
         }
 
         delete otMap;
@@ -282,18 +266,12 @@ void Window::ComputeOTAndSpawnParticles() {
     }
 }
 
-// Draw a Gaussian source selector: preset combo + optional OBJ path input.
-static void DrawGaussianSelector(const char* label, int& presetIdx, char* pathBuf,
-                                  const char** presetNames, int count) {
+// Draw a Gaussian source selector: OBJ path input or default blob.
+static void DrawGaussianSelector(const char* label, char* pathBuf) {
     ImGui::Text("%s:", label);
     ImGui::PushID(label);
 
     bool usingMesh = (pathBuf[0] != '\0');
-
-    // Preset combo (greyed out when a mesh path is entered)
-    if (usingMesh) ImGui::BeginDisabled();
-    ImGui::Combo("##preset", &presetIdx, presetNames, count);
-    if (usingMesh) ImGui::EndDisabled();
 
     // OBJ path input + clear button
     ImGui::SetNextItemWidth(-60);
@@ -305,7 +283,7 @@ static void DrawGaussianSelector(const char* label, int& presetIdx, char* pathBu
     if (usingMesh)
         ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh loaded");
     else
-        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  using preset");
+        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  blob (default)");
 
     ImGui::PopID();
 }
@@ -316,12 +294,9 @@ void Window::DrawMainGUI() {
     ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.7f, 1.0f), "Gaussian Cake");
     ImGui::Separator();
 
-    const char* presetNames[presetCount];
-    for (int i = 0; i < presetCount; i++) presetNames[i] = presets[i].name;
-
-    DrawGaussianSelector("Source (A)", presetIndexA, objPathA, presetNames, presetCount);
+    DrawGaussianSelector("Source (A)", objPathA);
     ImGui::Spacing();
-    DrawGaussianSelector("Target (B)", presetIndexB, objPathB, presetNames, presetCount);
+    DrawGaussianSelector("Target (B)", objPathB);
 
     ImGui::Separator();
     ImGui::SliderInt("Particles",    &particleCount, 100, 2000);
