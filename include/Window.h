@@ -26,8 +26,6 @@ public:
     static TransportAnimator* animator;
     static bool otMapComputed;
     static int particleCount;
-    static int presetIndexA;
-    static int presetIndexB;
 
     // OBJ mesh input — empty string means "use preset"
     static char objPathA[256];

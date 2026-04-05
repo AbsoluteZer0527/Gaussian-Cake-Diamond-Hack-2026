@@ -5,6 +5,7 @@
 #include "imgui_impl_opengl3.h"
 #include "OBJLoader.h"
 #include "MeshSampler.h"
+#include <iostream>
 
 //Window Properties
 int Window::width;
@@ -24,8 +25,6 @@ OTMap*           Window::otMap         = nullptr;
 TransportAnimator* Window::animator    = nullptr;
 bool             Window::otMapComputed = false;
 int              Window::particleCount = 1000;
-int              Window::presetIndexA  = 0;
-int              Window::presetIndexB  = 1;
 char             Window::objPathA[256] = {};
 char             Window::objPathB[256] = {};
 int              Window::sampleCount   = 2000;
@@ -37,21 +36,15 @@ int MouseX, MouseY;
 //The shader program id
 GLuint Window::shaderProgram;
 
-//Gaussian presets (diagonal covariance, mean at origin)
-//A cake built by gaussian
-struct GaussianPreset {
-    const char* name;
-    Eigen::Matrix3d cov;
-};
+// Default Gaussian: isotropic blob, σ=1.22 in all directions
+static Eigen::Matrix3d DefaultCovariance() {
+    return Eigen::Matrix3d::Identity() * 1.5;
+}
 
-static GaussianPreset presets[] = {
-    { "Cake Tier",       Eigen::Vector3d(2.0, 0.3, 2.0).asDiagonal() },  // flat disc
-    { "Diamond",         Eigen::Vector3d(0.5, 2.5, 0.5).asDiagonal() },  // tall spike
-    { "Frosting Sphere", Eigen::Vector3d(1.5, 1.5, 1.5).asDiagonal() },  // isotropic
-    { "Sprinkle Disc",   Eigen::Vector3d(3.0, 0.1, 3.0).asDiagonal() },  // very flat
-};
-static const int presetCount = (int)(sizeof(presets) / sizeof(presets[0]));
-
+// Forward declarations for static helper functions used before their definitions
+static glm::vec4 MahalanobisColor(float sigma);
+static void AssignGaussianColors(class ParticleSystem* ps, const class Gaussian& g);
+static void AssignHeightColors(class ParticleSystem* ps);
 
 // Constructors and desctructors
 bool Window::initializeProgram() {
@@ -61,6 +54,8 @@ bool Window::initializeProgram() {
         std::cerr << "Failed to initialize shader program" << std::endl;
         return false;
     }
+
+    std::cerr << "Window::initializeProgram: shaderProgram = " << shaderProgram << std::endl;
 
     return true;
 }
@@ -74,16 +69,23 @@ bool Window::initializeObjects() {
     animator      = new TransportAnimator();
     otMapComputed = false;
     particleCount = 1000;
-    presetIndexA  = 0;
-    presetIndexB  = 1;
 
     Cam->SetDistance(8.0f);
     Cam->SetIncline(-20.0f);
 
-    // Spawn initial shape so the scene isn't empty on startup
+    particleSystem->InitGL();
+
+    // Spawn default isotropic Gaussian blob on startup
     gaussianA->mean       = Eigen::Vector3d::Zero();
-    gaussianA->covariance = presets[0].cov;
+    gaussianA->covariance = DefaultCovariance();
     particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
+    // Uniform soft white — no coloring on the default blob
+    for (auto& p : particleSystem->particles)
+        p.color = glm::vec4(0.95f, 0.95f, 0.95f, 0.70f);
+
+    // Ensure particle radius is large enough to be visible by default while debugging
+    particleSystem->particleRadius = 0.5f;
+    std::cerr << "Window::initializeObjects: set particleRadius=" << particleSystem->particleRadius << std::endl;
 
     return true;
 }
@@ -168,7 +170,7 @@ void Window::displayCallback(GLFWwindow* window) {
     glLightfv(GL_LIGHT1, GL_POSITION, light1_pos);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_color);
 
-    particleSystem->Draw(Cam->GetViewProjectMtx());
+    particleSystem->Draw(Cam->GetViewProjectMtx(), Window::height);
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -186,6 +188,51 @@ void Window::displayCallback(GLFWwindow* window) {
     glfwSwapBuffers(window);
 }
 
+// Color helpers
+
+// Map Mahalanobis distance (in sigma units) to a layered "Gaussian cake" color.
+static glm::vec4 MahalanobisColor(float sigma) {
+    if (sigma < 1.0f) return glm::vec4(1.00f, 0.50f, 0.71f, 0.85f); // pink   — 1σ core
+    if (sigma < 2.0f) return glm::vec4(0.75f, 0.52f, 0.99f, 0.70f); // lavender — 2σ shell
+    if (sigma < 3.0f) return glm::vec4(0.38f, 0.65f, 0.98f, 0.55f); // sky blue — 3σ shell
+    return             glm::vec4(0.13f, 0.25f, 0.67f, 0.40f);        // deep blue — outer tail
+}
+
+// Color each particle by its Mahalanobis distance from the Gaussian mean.
+// This shows the shell structure of the Gaussian density directly on the cloud.
+static void AssignGaussianColors(ParticleSystem* ps, const Gaussian& g) {
+    Eigen::Matrix3d covInv = g.covariance.inverse();
+    for (auto& p : ps->particles) {
+        Eigen::Vector3d d(p.position.x - g.mean(0),
+                          p.position.y - g.mean(1),
+                          p.position.z - g.mean(2));
+        float mahal = (float)std::sqrt((d.transpose() * covInv * d)(0, 0));
+        p.color = MahalanobisColor(mahal);
+    }
+}
+
+// Color each particle by normalized Y height: blue at bottom, pink at top.
+// Used for discrete mesh OT where no Gaussian is available.
+static void AssignHeightColors(ParticleSystem* ps) {
+    if (ps->particles.empty()) return;
+    float minY = ps->particles[0].position.y;
+    float maxY = minY;
+    for (const auto& p : ps->particles) {
+        minY = std::min(minY, p.position.y);
+        maxY = std::max(maxY, p.position.y);
+    }
+    float range = (maxY - minY) < 1e-6f ? 1.0f : (maxY - minY);
+    for (auto& p : ps->particles) {
+        float t = (p.position.y - minY) / range;
+        p.color = glm::vec4(
+            glm::mix(0.38f, 1.00f, t),  // R: blue→pink
+            glm::mix(0.65f, 0.50f, t),  // G
+            glm::mix(0.98f, 0.71f, t),  // B
+            0.75f
+        );
+    }
+}
+
 // OT pipeline
 
 // Load an OBJ and fit a Gaussian to its surface. Returns false on failure.
@@ -199,12 +246,73 @@ static bool LoadMeshGaussian(const char* path, int N, Gaussian* g) {
 }
 
 void Window::ComputeOTAndSpawnParticles() {
+<<<<<<< Updated upstream
     // Gaussian A — OBJ if path given, else preset
     if (objPathA[0] != '\0') {
         if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
     } else {
         gaussianA->mean       = Eigen::Vector3d::Zero();
         gaussianA->covariance = presets[presetIndexA].cov;
+=======
+    bool hasMeshA = (objPathA[0] != '\0');
+    bool hasMeshB = (objPathB[0] != '\0');
+
+    if (hasMeshA && hasMeshB) {
+        // === Discrete mesh-to-mesh OT ===
+        // Particles start exactly on mesh A surface, end exactly on mesh B surface.
+        // The Gaussian OT map is not used — the greedy matching IS the transport.
+        std::vector<Triangle> trisA, trisB;
+        if (!OBJLoader::Load(objPathA, trisA)) return;
+        if (!OBJLoader::Load(objPathB, trisB)) return;
+        OBJLoader::Normalize(trisA);
+        OBJLoader::Normalize(trisB);
+
+        auto ptsA = MeshSampler::Sample(trisA, particleCount);
+        auto ptsB = MeshSampler::Sample(trisB, particleCount);
+
+        auto endPts = GreedyDiscreteOT(ptsA, ptsB);
+
+        // Place particles directly at mesh A surface positions
+        particleSystem->particles.clear();
+        particleSystem->transportPositions = ptsA;
+        for (const auto& pos : ptsA) {
+            Particle p(particleSystem->particleRadius);
+            p.position = pos;
+            particleSystem->particles.push_back(p);
+        }
+
+        AssignHeightColors(particleSystem);
+
+        animator->InitializeWithEndPoints(ptsA, endPts);
+        particleSystem->useOTPositions = true;
+        animator->StartTransport();
+
+    } else {
+        // === Gaussian OT (mesh → blob, blob → mesh, or blob → blob) ===
+        if (hasMeshA) {
+            if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
+        } else {
+            gaussianA->mean       = Eigen::Vector3d::Zero();
+            gaussianA->covariance = DefaultCovariance();
+        }
+
+        if (hasMeshB) {
+            if (!LoadMeshGaussian(objPathB, sampleCount, gaussianB)) return;
+        } else {
+            gaussianB->mean       = Eigen::Vector3d::Zero();
+            gaussianB->covariance = DefaultCovariance();
+        }
+
+        delete otMap;
+        otMap         = new OTMap(OptimalTransport::Compute(*gaussianA, *gaussianB));
+        otMapComputed = true;
+
+        particleSystem->SpawnFromGaussian(*gaussianA, particleCount);
+        AssignGaussianColors(particleSystem, *gaussianA);
+        animator->Initialize(particleSystem->transportPositions, *otMap);
+        particleSystem->useOTPositions = true;
+        animator->StartTransport();
+>>>>>>> Stashed changes
     }
 
     // Gaussian B — OBJ if path given, else preset
@@ -226,20 +334,13 @@ void Window::ComputeOTAndSpawnParticles() {
     animator->StartTransport();
 }
 
-// Draw a Gaussian source selector: preset combo + optional OBJ path input.
-static void DrawGaussianSelector(const char* label, int& presetIdx, char* pathBuf,
-                                  const char** presetNames, int count) {
+// Draw a Gaussian source selector: OBJ path input or default blob.
+static void DrawGaussianSelector(const char* label, char* pathBuf) {
     ImGui::Text("%s:", label);
     ImGui::PushID(label);
 
     bool usingMesh = (pathBuf[0] != '\0');
 
-    // Preset combo (greyed out when a mesh path is entered)
-    if (usingMesh) ImGui::BeginDisabled();
-    ImGui::Combo("##preset", &presetIdx, presetNames, count);
-    if (usingMesh) ImGui::EndDisabled();
-
-    // OBJ path input + clear button
     ImGui::SetNextItemWidth(-60);
     ImGui::InputText("##obj", pathBuf, 256);
     ImGui::SameLine();
@@ -247,9 +348,9 @@ static void DrawGaussianSelector(const char* label, int& presetIdx, char* pathBu
         pathBuf[0] = '\0';
 
     if (usingMesh)
-        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh loaded");
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh");
     else
-        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  using preset");
+        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  gaussian blob (default)");
 
     ImGui::PopID();
 }
@@ -260,12 +361,9 @@ void Window::DrawMainGUI() {
     ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.7f, 1.0f), "Gaussian Cake");
     ImGui::Separator();
 
-    const char* presetNames[presetCount];
-    for (int i = 0; i < presetCount; i++) presetNames[i] = presets[i].name;
-
-    DrawGaussianSelector("Source (A)", presetIndexA, objPathA, presetNames, presetCount);
+    DrawGaussianSelector("Source (A)", objPathA);
     ImGui::Spacing();
-    DrawGaussianSelector("Target (B)", presetIndexB, objPathB, presetNames, presetCount);
+    DrawGaussianSelector("Target (B)", objPathB);
 
     ImGui::Separator();
     ImGui::SliderInt("Particles",    &particleCount, 100, 2000);

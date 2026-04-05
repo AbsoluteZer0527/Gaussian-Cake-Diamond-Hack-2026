@@ -34,8 +34,9 @@ void setup_opengl_settings() {
     // Set clear color to black.
     glClearColor(0.0, 0.0, 0.0, 0.0);
     //ligihting
+    glEnable(GL_PROGRAM_POINT_SIZE); // allow vertex shader to set gl_PointSize
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);      
+    glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);        
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE); 
@@ -101,11 +102,11 @@ int main(int argc, char** argv) {
 
     // Loop while GLFW window should stay open.
     while (!glfwWindowShouldClose(window)) {
+        // Idle callback — update camera and animations before rendering.
+        Window::idleCallback();
+
         // Main render display callback. Rendering of objects is done here.
         Window::displayCallback(window);
-
-        // Idle callback. Updating objects, etc. can be done here.
-        Window::idleCallback();
     }
 
     Window::cleanUp();

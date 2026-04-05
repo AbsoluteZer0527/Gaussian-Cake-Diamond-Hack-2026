@@ -26,7 +26,8 @@ void Camera::Reset() {
     FOV = 45.0f;
     Aspect = 1.33f;
     NearClip = 0.1f;
-    FarClip = 100.0f;
+    // Increase far clip to avoid accidentally clipping particles at moderate distances
+    FarClip = 1000.0f;
 
     Distance = 10.0f;
     Azimuth = 0.0f;
