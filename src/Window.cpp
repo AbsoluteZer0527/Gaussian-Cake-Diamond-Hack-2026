@@ -83,14 +83,14 @@ bool Window::initializeProgram() {
 bool Window::initializeObjects() {
     particleSystem = new ParticleSystem();
 
-    gaussianA     = new Gaussian();
-    gaussianB     = new Gaussian();
-    otMap         = nullptr;
-    animator      = new TransportAnimator();
+    gaussianA = new Gaussian();
+    gaussianB = new Gaussian();
+    otMap = nullptr;
+    animator = new TransportAnimator();
     otMapComputed = false;
-    particleCount = 1000;
-    meshIndexA    = 0;
-    meshIndexB    = 0;
+    particleCount = 3000;
+    meshIndexA = 0;
+    meshIndexB = 0;
 
     ScanMeshes();
 
@@ -312,7 +312,7 @@ static void DrawGaussianSelector(const char* label, int& meshIndex) {
     int total = 1 + (int)Window::meshNames.size();
     auto getter = [](void* data, int idx, const char** out) -> bool {
         auto* names = static_cast<std::vector<std::string>*>(data);
-        if (idx == 0) { *out = "(blob)"; return true; }
+        if (idx == 0) { *out = "Show Gaussian"; return true; }
         if (idx - 1 < (int)names->size()) { *out = (*names)[idx - 1].c_str(); return true; }
         return false;
     };
@@ -321,7 +321,7 @@ static void DrawGaussianSelector(const char* label, int& meshIndex) {
     if (meshIndex > 0)
         ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh selected");
     else
-        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  Show Guassian(default)");
+        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  Show Gaussian(default)");
 
     ImGui::PopID();
 }
@@ -354,10 +354,10 @@ void Window::DrawMainGUI() {
     ImGui::Spacing();
     ImGui::Separator();
 
-    if (ImGui::Button("Return to A"))
+    if (ImGui::Button("Revert"))
         animator->ReverseTransport();
     ImGui::SameLine();
-    if (ImGui::Button("Reset")) {
+    if (ImGui::Button("Clear")) {
         animator->Reset();
         particleSystem->useOTPositions = false;
         particleSystem->particles.clear();
