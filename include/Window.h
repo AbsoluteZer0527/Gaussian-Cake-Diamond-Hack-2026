@@ -5,6 +5,9 @@
 #include "Shader.h"
 #include "core.h"
 #include "ParticleSystem.h"
+#include "Gaussian.h"
+#include "OptimalTransport.h"
+#include "TransportAnimator.h"
 
 class Window {
 public:
@@ -14,8 +17,17 @@ public:
     static const char* windowTitle;
 
     // Objects to render
-    // static Cube* cube;
     static ParticleSystem* particleSystem;
+
+    // Gaussian OT pipeline
+    static Gaussian* gaussianA;
+    static Gaussian* gaussianB;
+    static OTMap* otMap;
+    static TransportAnimator* animator;
+    static bool otMapComputed;
+    static int particleCount;
+    static int presetIndexA;
+    static int presetIndexB;
 
     // Shader Program
     static GLuint shaderProgram;
@@ -40,4 +52,8 @@ public:
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void mouse_callback(GLFWwindow* window, int button, int action, int mods);
     static void cursor_callback(GLFWwindow* window, double currX, double currY);
+
+    // OT pipeline
+    static void ComputeOTAndSpawnParticles();
+    static void DrawMainGUI();
 };

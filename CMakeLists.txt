@@ -21,6 +21,10 @@ set(
     src/ParticleSystem.cpp
     src/Gaussian.cpp
     src/SpringDamper.cpp
+    src/OBJLoader.cpp
+    src/MeshSampler.cpp
+    src/OptimalTransport.cpp
+    src/TransportAnimator.cpp
 )
 
 # Add header files
@@ -39,6 +43,7 @@ find_package(OpenGL REQUIRED)
 # Add include directories
 include_directories(
     include
+    include/Eigen
 )
 
 # Add library directories

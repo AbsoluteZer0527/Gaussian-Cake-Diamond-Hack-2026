@@ -52,7 +52,7 @@ build cmake_object_order_depends_target_menv: phony || CopyShaders
 build CMakeFiles\menv.dir\main.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\main.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -62,7 +62,7 @@ build CMakeFiles\menv.dir\main.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\U
 build CMakeFiles\menv.dir\src\Camera.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\Camera.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -72,7 +72,7 @@ build CMakeFiles\menv.dir\src\Camera.cpp.obj: CXX_COMPILER__menv_unscanned_Debug
 build CMakeFiles\menv.dir\src\Cube.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\Cube.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -82,7 +82,7 @@ build CMakeFiles\menv.dir\src\Cube.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C
 build CMakeFiles\menv.dir\src\Shader.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\Shader.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -92,7 +92,7 @@ build CMakeFiles\menv.dir\src\Shader.cpp.obj: CXX_COMPILER__menv_unscanned_Debug
 build CMakeFiles\menv.dir\src\Window.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\Window.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -102,7 +102,7 @@ build CMakeFiles\menv.dir\src\Window.cpp.obj: CXX_COMPILER__menv_unscanned_Debug
 build CMakeFiles\menv.dir\src\imgui_widgets.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\imgui_widgets.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -112,7 +112,7 @@ build CMakeFiles\menv.dir\src\imgui_widgets.cpp.obj: CXX_COMPILER__menv_unscanne
 build CMakeFiles\menv.dir\src\imgui.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\imgui.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -122,7 +122,7 @@ build CMakeFiles\menv.dir\src\imgui.cpp.obj: CXX_COMPILER__menv_unscanned_Debug 
 build CMakeFiles\menv.dir\src\imgui_demo.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\imgui_demo.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -132,7 +132,7 @@ build CMakeFiles\menv.dir\src\imgui_demo.cpp.obj: CXX_COMPILER__menv_unscanned_D
 build CMakeFiles\menv.dir\src\imgui_draw.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\imgui_draw.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -142,7 +142,7 @@ build CMakeFiles\menv.dir\src\imgui_draw.cpp.obj: CXX_COMPILER__menv_unscanned_D
 build CMakeFiles\menv.dir\src\imgui_tables.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\imgui_tables.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -152,7 +152,7 @@ build CMakeFiles\menv.dir\src\imgui_tables.cpp.obj: CXX_COMPILER__menv_unscanned
 build CMakeFiles\menv.dir\src\imgui_impl_glfw.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\imgui_impl_glfw.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -162,7 +162,7 @@ build CMakeFiles\menv.dir\src\imgui_impl_glfw.cpp.obj: CXX_COMPILER__menv_unscan
 build CMakeFiles\menv.dir\src\imgui_impl_opengl3.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\imgui_impl_opengl3.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -172,7 +172,7 @@ build CMakeFiles\menv.dir\src\imgui_impl_opengl3.cpp.obj: CXX_COMPILER__menv_uns
 build CMakeFiles\menv.dir\src\Particle.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\Particle.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -182,7 +182,7 @@ build CMakeFiles\menv.dir\src\Particle.cpp.obj: CXX_COMPILER__menv_unscanned_Deb
 build CMakeFiles\menv.dir\src\ParticleSystem.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\ParticleSystem.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -192,7 +192,7 @@ build CMakeFiles\menv.dir\src\ParticleSystem.cpp.obj: CXX_COMPILER__menv_unscann
 build CMakeFiles\menv.dir\src\Gaussian.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\Gaussian.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -202,7 +202,47 @@ build CMakeFiles\menv.dir\src\Gaussian.cpp.obj: CXX_COMPILER__menv_unscanned_Deb
 build CMakeFiles\menv.dir\src\SpringDamper.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\SpringDamper.cpp || cmake_object_order_depends_target_menv
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include"
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
+  OBJECT_DIR = CMakeFiles\menv.dir
+  OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
+  TARGET_PDB = menv.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\menv.dir
+
+build CMakeFiles\menv.dir\src\OBJLoader.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\OBJLoader.cpp || cmake_object_order_depends_target_menv
+  CONFIG = Debug
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
+  OBJECT_DIR = CMakeFiles\menv.dir
+  OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
+  TARGET_PDB = menv.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\menv.dir
+
+build CMakeFiles\menv.dir\src\MeshSampler.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\MeshSampler.cpp || cmake_object_order_depends_target_menv
+  CONFIG = Debug
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
+  OBJECT_DIR = CMakeFiles\menv.dir
+  OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
+  TARGET_PDB = menv.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\menv.dir
+
+build CMakeFiles\menv.dir\src\OptimalTransport.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\OptimalTransport.cpp || cmake_object_order_depends_target_menv
+  CONFIG = Debug
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
+  OBJECT_DIR = CMakeFiles\menv.dir
+  OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
+  TARGET_PDB = menv.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\menv.dir
+
+build CMakeFiles\menv.dir\src\TransportAnimator.cpp.obj: CXX_COMPILER__menv_unscanned_Debug C$:\Users\zhulu\Github\Gussian$ Cake$ Diamond$ Hack$ 2026\src\TransportAnimator.cpp || cmake_object_order_depends_target_menv
+  CONFIG = Debug
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  INCLUDES = -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include" -I"C:\Users\zhulu\Github\Gussian Cake Diamond Hack 2026\include\Eigen"
   OBJECT_DIR = CMakeFiles\menv.dir
   OBJECT_FILE_DIR = CMakeFiles\menv.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\menv.dir\
@@ -217,7 +257,7 @@ build CMakeFiles\menv.dir\src\SpringDamper.cpp.obj: CXX_COMPILER__menv_unscanned
 #############################################
 # Link the executable menv.exe
 
-build menv.exe: CXX_EXECUTABLE_LINKER__menv_Debug CMakeFiles\menv.dir\main.cpp.obj CMakeFiles\menv.dir\src\Camera.cpp.obj CMakeFiles\menv.dir\src\Cube.cpp.obj CMakeFiles\menv.dir\src\Shader.cpp.obj CMakeFiles\menv.dir\src\Window.cpp.obj CMakeFiles\menv.dir\src\imgui_widgets.cpp.obj CMakeFiles\menv.dir\src\imgui.cpp.obj CMakeFiles\menv.dir\src\imgui_demo.cpp.obj CMakeFiles\menv.dir\src\imgui_draw.cpp.obj CMakeFiles\menv.dir\src\imgui_tables.cpp.obj CMakeFiles\menv.dir\src\imgui_impl_glfw.cpp.obj CMakeFiles\menv.dir\src\imgui_impl_opengl3.cpp.obj CMakeFiles\menv.dir\src\Particle.cpp.obj CMakeFiles\menv.dir\src\ParticleSystem.cpp.obj CMakeFiles\menv.dir\src\Gaussian.cpp.obj CMakeFiles\menv.dir\src\SpringDamper.cpp.obj || CopyShaders
+build menv.exe: CXX_EXECUTABLE_LINKER__menv_Debug CMakeFiles\menv.dir\main.cpp.obj CMakeFiles\menv.dir\src\Camera.cpp.obj CMakeFiles\menv.dir\src\Cube.cpp.obj CMakeFiles\menv.dir\src\Shader.cpp.obj CMakeFiles\menv.dir\src\Window.cpp.obj CMakeFiles\menv.dir\src\imgui_widgets.cpp.obj CMakeFiles\menv.dir\src\imgui.cpp.obj CMakeFiles\menv.dir\src\imgui_demo.cpp.obj CMakeFiles\menv.dir\src\imgui_draw.cpp.obj CMakeFiles\menv.dir\src\imgui_tables.cpp.obj CMakeFiles\menv.dir\src\imgui_impl_glfw.cpp.obj CMakeFiles\menv.dir\src\imgui_impl_opengl3.cpp.obj CMakeFiles\menv.dir\src\Particle.cpp.obj CMakeFiles\menv.dir\src\ParticleSystem.cpp.obj CMakeFiles\menv.dir\src\Gaussian.cpp.obj CMakeFiles\menv.dir\src\SpringDamper.cpp.obj CMakeFiles\menv.dir\src\OBJLoader.cpp.obj CMakeFiles\menv.dir\src\MeshSampler.cpp.obj CMakeFiles\menv.dir\src\OptimalTransport.cpp.obj CMakeFiles\menv.dir\src\TransportAnimator.cpp.obj || CopyShaders
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
