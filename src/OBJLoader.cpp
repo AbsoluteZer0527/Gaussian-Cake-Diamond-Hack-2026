@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <climits>
-#include <component_wise.hpp>
+#include <glm/gtx/component_wise.hpp>
 
 //simple .obj file loader code
 bool OBJLoader::Load(const std::string& filepath, std::vector<Triangle>& outTriangles) {

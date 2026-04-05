@@ -20,7 +20,6 @@ set(
     src/Particle.cpp
     src/ParticleSystem.cpp
     src/Gaussian.cpp
-    src/SpringDamper.cpp
     src/OBJLoader.cpp
     src/MeshSampler.cpp
     src/OptimalTransport.cpp

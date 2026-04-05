@@ -7,7 +7,7 @@
 //Window Properties
 int Window::width;
 int Window::height;
-const char* Window::windowTitle = "Gaussian Cake Diamond Hack 2026";
+const char* Window::windowTitle = "Gaussian Cake";
 
 //Camera Properties
 Camera* Cam;
