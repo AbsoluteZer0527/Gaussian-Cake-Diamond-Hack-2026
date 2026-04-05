@@ -3,7 +3,6 @@
 ## Demo: https://youtu.be/RBu-PR3ZYA4
 <img width="2100" height="1247" alt="Screenshot 2026-04-05 005843" src="https://github.com/user-attachments/assets/c7f926b8-0df9-4d66-8b2c-34ff7d3b350e" />
 <img width="1544" height="1029" alt="image" src="https://github.com/user-attachments/assets/dcbf13d9-b03c-4d5f-9efe-094bd0207caf" />
-n .obj model: Add to the "meshes" folder.**
 
 ## Inspiration
 This project is inspired by the mathematical problem of **Optimal Transport (OT)**, which seeks a mapping between two distributions that minimizes a specified transport cost. 
@@ -69,6 +68,8 @@ _The point of this project is to show how theoretical concepts can be applied in
 
 ## How to Run
 Download the release, unzip it, and run the menv.exe.
+
+To import your own .obj models: Add to the `meshes` folder.
 
 ### Input Bindings
 ESC — Close application
