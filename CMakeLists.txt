@@ -52,6 +52,7 @@ link_directories(
 
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} glew32s.lib glfw3)

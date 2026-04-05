@@ -34,8 +34,9 @@ void setup_opengl_settings() {
     // Set clear color to black.
     glClearColor(0.0, 0.0, 0.0, 0.0);
     //ligihting
+    glEnable(GL_PROGRAM_POINT_SIZE); // allow vertex shader to set gl_PointSize
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);      
+    glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);        
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE); 

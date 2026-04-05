@@ -6,6 +6,9 @@
 #include "OBJLoader.h"
 #include "MeshSampler.h"
 
+#include <filesystem>
+#include <algorithm>
+
 //Window Properties
 int Window::width;
 int Window::height;
@@ -24,8 +27,10 @@ OTMap*           Window::otMap         = nullptr;
 TransportAnimator* Window::animator    = nullptr;
 bool             Window::otMapComputed = false;
 int              Window::particleCount = 1000;
-char             Window::objPathA[256] = {};
-char             Window::objPathB[256] = {};
+std::vector<std::string> Window::meshNames;
+std::vector<std::string> Window::meshPaths;
+int              Window::meshIndexA    = 0;
+int              Window::meshIndexB    = 0;
 int              Window::sampleCount   = 2000;
 
 //Interaction Variables
@@ -38,6 +43,30 @@ GLuint Window::shaderProgram;
 // Default blob: isotropic 3D Gaussian (no color, no named presets)
 static const Eigen::Matrix3d blobCovariance = Eigen::Vector3d(1.0, 1.0, 1.0).asDiagonal();
 
+// Scan the meshes/ directory and populate Window::meshNames / meshPaths.
+// Index 0 is always the "blob" sentinel (no path).
+static void ScanMeshes() {
+    Window::meshNames.clear();
+    Window::meshPaths.clear();
+
+    namespace fs = std::filesystem;
+    std::string meshDir = "meshes";
+
+    if (fs::is_directory(meshDir)) {
+        std::vector<std::string> found;
+        for (const auto& entry : fs::directory_iterator(meshDir)) {
+            if (entry.is_regular_file() &&
+                entry.path().extension() == ".obj") {
+                found.push_back(entry.path().string());
+            }
+        }
+        std::sort(found.begin(), found.end());
+        for (const auto& p : found) {
+            Window::meshPaths.push_back(p);
+            Window::meshNames.push_back(fs::path(p).filename().string());
+        }
+    }
+}
 
 // Constructors and desctructors
 bool Window::initializeProgram() {
@@ -60,6 +89,10 @@ bool Window::initializeObjects() {
     animator      = new TransportAnimator();
     otMapComputed = false;
     particleCount = 1000;
+    meshIndexA    = 0;
+    meshIndexB    = 0;
+
+    ScanMeshes();
 
     Cam->SetDistance(8.0f);
     Cam->SetIncline(-20.0f);
@@ -208,16 +241,19 @@ static std::vector<glm::vec3> GreedyDiscreteOT(
 }
 
 void Window::ComputeOTAndSpawnParticles() {
-    bool hasMeshA = (objPathA[0] != '\0');
-    bool hasMeshB = (objPathB[0] != '\0');
+    // meshIndex 0 = blob; 1..N = meshPaths[index-1]
+    bool hasMeshA = (meshIndexA > 0 && meshIndexA <= (int)meshPaths.size());
+    bool hasMeshB = (meshIndexB > 0 && meshIndexB <= (int)meshPaths.size());
+    const std::string& pathA = hasMeshA ? meshPaths[meshIndexA - 1] : "";
+    const std::string& pathB = hasMeshB ? meshPaths[meshIndexB - 1] : "";
 
     if (hasMeshA && hasMeshB) {
         // === Discrete mesh-to-mesh OT ===
         // Particles start exactly on mesh A surface, end exactly on mesh B surface.
         // The Gaussian OT map is not used — the greedy matching IS the transport.
         std::vector<Triangle> trisA, trisB;
-        if (!OBJLoader::Load(objPathA, trisA)) return;
-        if (!OBJLoader::Load(objPathB, trisB)) return;
+        if (!OBJLoader::Load(pathA.c_str(), trisA)) return;
+        if (!OBJLoader::Load(pathB.c_str(), trisB)) return;
         OBJLoader::Normalize(trisA);
         OBJLoader::Normalize(trisB);
 
@@ -240,16 +276,16 @@ void Window::ComputeOTAndSpawnParticles() {
         animator->StartTransport();
 
     } else {
-        // === Gaussian OT (presets, or single mesh → Gaussian) ===
+        // === Gaussian OT (mesh → Gaussian or blob → blob) ===
         if (hasMeshA) {
-            if (!LoadMeshGaussian(objPathA, sampleCount, gaussianA)) return;
+            if (!LoadMeshGaussian(pathA.c_str(), sampleCount, gaussianA)) return;
         } else {
             gaussianA->mean       = Eigen::Vector3d::Zero();
             gaussianA->covariance = blobCovariance;
         }
 
         if (hasMeshB) {
-            if (!LoadMeshGaussian(objPathB, sampleCount, gaussianB)) return;
+            if (!LoadMeshGaussian(pathB.c_str(), sampleCount, gaussianB)) return;
         } else {
             gaussianB->mean       = Eigen::Vector3d::Zero();
             gaussianB->covariance = blobCovariance;
@@ -266,22 +302,23 @@ void Window::ComputeOTAndSpawnParticles() {
     }
 }
 
-// Draw a Gaussian source selector: OBJ path input or default blob.
-static void DrawGaussianSelector(const char* label, char* pathBuf) {
+// Draw a mesh selector combo: first entry is the blob default, rest are scanned .obj files.
+static void DrawGaussianSelector(const char* label, int& meshIndex) {
     ImGui::Text("%s:", label);
     ImGui::PushID(label);
 
-    bool usingMesh = (pathBuf[0] != '\0');
+    // Build list: "(blob)" + mesh filenames
+    int total = 1 + (int)Window::meshNames.size();
+    auto getter = [](void* data, int idx, const char** out) -> bool {
+        auto* names = static_cast<std::vector<std::string>*>(data);
+        if (idx == 0) { *out = "(blob)"; return true; }
+        if (idx - 1 < (int)names->size()) { *out = (*names)[idx - 1].c_str(); return true; }
+        return false;
+    };
+    ImGui::Combo("##mesh", &meshIndex, getter, &Window::meshNames, total);
 
-    // OBJ path input + clear button
-    ImGui::SetNextItemWidth(-60);
-    ImGui::InputText("##obj", pathBuf, 256);
-    ImGui::SameLine();
-    if (ImGui::Button("Clear"))
-        pathBuf[0] = '\0';
-
-    if (usingMesh)
-        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh loaded");
+    if (meshIndex > 0)
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.6f, 1.0f), "  mesh selected");
     else
         ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "  blob (default)");
 
@@ -294,9 +331,9 @@ void Window::DrawMainGUI() {
     ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.7f, 1.0f), "Gaussian Cake");
     ImGui::Separator();
 
-    DrawGaussianSelector("Source (A)", objPathA);
+    DrawGaussianSelector("Source (A)", meshIndexA);
     ImGui::Spacing();
-    DrawGaussianSelector("Target (B)", objPathB);
+    DrawGaussianSelector("Target (B)", meshIndexB);
 
     ImGui::Separator();
     ImGui::SliderInt("Particles",    &particleCount, 100, 2000);

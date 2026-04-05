@@ -9,6 +9,9 @@
 #include "OptimalTransport.h"
 #include "TransportAnimator.h"
 
+#include <string>
+#include <vector>
+
 class Window {
 public:
     // Window Properties
@@ -27,10 +30,12 @@ public:
     static bool otMapComputed;
     static int particleCount;
 
-    // OBJ mesh input — empty string means "use default blob"
-    static char objPathA[256];
-    static char objPathB[256];
-    static int  sampleCount;   // points sampled from mesh surface
+    // Mesh selection: index 0 = blob, indices 1..N = entries in meshPaths
+    static std::vector<std::string> meshNames;  // display names (filenames)
+    static std::vector<std::string> meshPaths;  // full relative paths
+    static int meshIndexA;
+    static int meshIndexB;
+    static int sampleCount;   // points sampled from mesh surface
 
     // Shader Program
     static GLuint shaderProgram;
