@@ -26,7 +26,7 @@ The **Gaussian optimal transport** samples the mean and variance from the model,
 
 ![Gaussian Cake 2026-04-05 00-52-48](https://github.com/user-attachments/assets/649e1400-d890-4f04-bd54-fbb08966795c)
 
-_Since the main concept of this connects with the Gaussian distribution, the morphing process is similar to "baking", the callbacks to the idea of a Gaussian cake...Yum_
+_Since the main concept of this connects with the Gaussian distribution, the morphing process is similar to "baking", it callbacks to the idea of a Gaussian cake...Yum_
 
 ## How I built it
 
