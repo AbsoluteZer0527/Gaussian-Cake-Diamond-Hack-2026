@@ -16,23 +16,27 @@ And if you have ever heard of this website: https://obamify.com/, it shares a si
 ## What it does
 This is an experimental graphic project that mainly serves the purpose of applying the math concept of Optimal Transport into an actual computer animation pipeline.
 
-A low-level C++ OpenGL program that takes in **any .obj imported models** : A and B. Once you click "Bake It!", the program shows either a **smooth animation of the model morphing from A to B**, or the transport animation of a Gaussian distribution sampling from A to B. This is a particle system animation project that showcases the concept of optimal transport in two ways: GreedyDiscrete OT for the mesh and Gaussian OT for the distribution.
+A low-level C++ OpenGL program that takes in **any .obj imported models** : A and B. Once you click "Bake It!", the program shows either (1) a **smooth animation of the model morphing from A to B**, or (2) transport animation of a **Gaussian distribution sampling from A to B**(so far the program only supports default -> model and model -> default). This is a particle system animation project that showcases the concept of optimal transport in two ways: GreedyDiscrete OT for the mesh and Gaussian OT for the distribution.
 
-The Greedy discrete optimal transport is a simple approximation for the surface points that allows the model to go from A to B (mesh-mesh transport).
+The **Greedy discrete optimal transport** is a simple approximation for the surface points that allows the model to go from A to B (mesh-mesh transport).
 
-The Gaussian optimal transport samples the mean and variance from the model, which is that particle-shaped blob that moves into another set of particle-shaped blobs.(sample-sample)
+![Gaussian Cake 2026-04-05 00-06-42](https://github.com/user-attachments/assets/14364820-fb94-488f-9677-ef261d2ac3e8)
 
-_Since the main concept has this connection with the Gaussian distribution, the morphing process is similar to "baking", the callbacks to the idea of a Gaussian cake._
+The **Gaussian optimal transport** samples the mean and variance from the model, which is that particle-shaped blob that moves into another set of particle-shaped blobs.(sample-sample)
+
+![Gaussian Cake 2026-04-05 00-52-48](https://github.com/user-attachments/assets/649e1400-d890-4f04-bd54-fbb08966795c)
+
+_Since the main concept has this connection with the Gaussian distribution, the morphing process is similar to "baking", the callbacks to the idea of a Gaussian cake...Yum_
 
 ## How I built it
 
-I only use raw code C++ and libraries(basic OpenGL, imgui UI, linear algebra libraries) for this project. I first initialized a shader, a window, and a basic mesh import. I first worked on the particle system, which allows later stages of implementation for the Gaussian sampling and applying optimal transport. Then I expand it to greedy optimal transport for the actual animation of model morphing.
+I only use raw code C++ and libraries(basic OpenGL, imgui UI, linear algebra libraries) for this project. I first initialized a shader, a window, and a basic mesh import. Then I worked on the particle system, which allows later stages of implementation for the Gaussian sampling and applying optimal transport. Then I expand it to greedy optimal transport for the actual animation of model morphing.
 
 ## More about the Math: 
 
 The Gaussian optimal transport samples the mean and variance from the model, which yields better runtime and exact geometry morphing with cheap computation power: It's only linear algebra!
 
-$T(x)=m2 ​+ A(x− m1​)$
+$T(x)=m2 + A(x− m1​)$
 
 where m1 and m2 are the Gaussian means, and A encodes the covariance-based linear transformation.
 
@@ -43,7 +47,8 @@ $\sum_{i}\| x_i - y_{\sigma(i)}\|^2_{\text{Greedy}}$
 This mapping can then be directly used to generate smooth mesh-to-mesh morphing animations.
 And therefore, this transformation could be simulated with computer animation, which could be expanded to mesh-to-mesh morphing animations.
 
-![Alt text](https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/004/531/959/datas/original.jpg)
+![Alt text](https://d112y698adiu2z.cloudfront.net/p<img width="3165" height="2476" alt="graphic" src="https://github.com/user-attachments/assets/1b8b7b01-583d-4b63-8a21-b4fcb72a816c" />
+hotos/production/software_photos/004/531/959/datas/original.jpg)
 
 More insight about OT in general: https://alexhwilliams.info/itsneuronalblog/2020/10/09/optimal-transport/
 
@@ -64,7 +69,7 @@ It actually worked.
 
 This is an experimental project that expands on the concept of a simple particle system: It provides insight into 3D model morphing, and I can definitely incorporate the concept into larger game projects or animation programs. 
 
-_The point of this project is to show how theoretical concepts can be applied in diverse settings and how practical applications can help visualize and understand these concepts._
+_For this project, I really want to show how theoretical concepts can actually be applied in fun settings, and how practical applications can help visualize and understand these concepts._
 
 ## How to Run
 Download the release, unzip it, and run the menv.exe.
