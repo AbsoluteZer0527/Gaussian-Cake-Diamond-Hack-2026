@@ -26,11 +26,11 @@ The **Gaussian optimal transport** samples the mean and variance from the model,
 
 ![Gaussian Cake 2026-04-05 00-52-48](https://github.com/user-attachments/assets/649e1400-d890-4f04-bd54-fbb08966795c)
 
-_Since the main concept has this connection with the Gaussian distribution, the morphing process is similar to "baking", the callbacks to the idea of a Gaussian cake...Yum_
+_Since the main concept of this connects with the Gaussian distribution, the morphing process is similar to "baking", the callbacks to the idea of a Gaussian cake...Yum_
 
 ## How I built it
 
-I only use raw code C++ and libraries(basic OpenGL, imgui UI, linear algebra libraries) for this project. I first initialized a shader, a window, and a basic mesh import. Then I worked on the particle system, which allows later stages of implementation for the Gaussian sampling and applying optimal transport. Then I expand it to greedy optimal transport for the actual animation of model morphing.
+I only use raw code C++ and libraries(basic OpenGL, imgui UI, linear algebra libraries) for this project. I first initialized a shader, a window, and a basic mesh import. Then I worked on the particle system, which allows later stages of implementation for the Gaussian sampling and applying optimal transport. Finally, I expand it to greedy optimal transport for the actual animation of model morphing.
 
 ## More about the Math: 
 
@@ -47,8 +47,8 @@ $\sum_{i}\| x_i - y_{\sigma(i)}\|^2_{\text{Greedy}}$
 This mapping can then be directly used to generate smooth mesh-to-mesh morphing animations.
 And therefore, this transformation could be simulated with computer animation, which could be expanded to mesh-to-mesh morphing animations.
 
-![Alt text](https://d112y698adiu2z.cloudfront.net/p<img width="3165" height="2476" alt="graphic" src="https://github.com/user-attachments/assets/1b8b7b01-583d-4b63-8a21-b4fcb72a816c" />
-hotos/production/software_photos/004/531/959/datas/original.jpg)
+<img width="3165" height="2476" alt="graphic" src="https://github.com/user-attachments/assets/1b8b7b01-583d-4b63-8a21-b4fcb72a816c" />
+
 
 More insight about OT in general: https://alexhwilliams.info/itsneuronalblog/2020/10/09/optimal-transport/
 
@@ -60,7 +60,7 @@ Debugging in C++ is painful. I had no clue why my program was not building at al
 It actually worked.
 
 ## What I learned
-- Different methods of Optimal Transport.
+- Different methods of Optimal Transport (and what even is optimal transport)
 - A more solid understanding of Barycentric coordinates: how the particles are from a mesh through a triangle mesh.
 - Constructing the 3D Gaussian formula using glm and eigen. (C++ libraries)
 - The animation pipeline, using the OT method, is applied to the particle system.
